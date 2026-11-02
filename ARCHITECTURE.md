@@ -234,7 +234,7 @@ Who depends on whom, in full:
 | `core/recall/` | `_hook`, `_exec_guard`, `core/recall/recall.py` (engine, reused by `curate.py` as its own validator) | yes |
 | `core/sentinel/` | `_hook`, `_exec_guard`; READS settings files and the journal | yes |
 | `core/governor/` | `_hook` via `core/governor/_state.py`; `core/governor/judges.py` | yes |
-| `watch/` | `_hook` via `tools/watch/config.py`; READS transcripts and journals | yes |
+| `tools/watch/` | `_hook` via `tools/watch/config.py`; READS transcripts and journals | yes |
 
 Two properties fall out of that shape.
 
