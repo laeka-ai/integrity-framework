@@ -73,7 +73,7 @@ from datetime import datetime
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-sys.path.insert(0, os.path.join(ROOT, "gates"))
+sys.path.insert(0, os.path.join(ROOT, "common"))
 try:
     from _hook import GATE_STATS, STATE_DIR, gate_stat
 except Exception:  # MANDATORY fallback: mirrors the helper's own defaults.
@@ -413,7 +413,7 @@ def hook_dirs(cli_dirs):
     hooks directory plus the agent's own ~/.claude/hooks."""
     raw = list(cli_dirs or []) or env_list("HARNESS_HOOK_DIRS")
     if not raw:
-        raw = [os.path.join(ROOT, "gates"), os.path.expanduser("~/.claude/hooks")]
+        raw = [os.path.join(ROOT, os.pardir, "adapters", "claude-code", "hooks"), os.path.expanduser("~/.claude/hooks")]
     return sorted({os.path.normpath(os.path.expanduser(p)) for p in raw if p})
 
 
@@ -550,7 +550,7 @@ def check_coverage(hooks, days, exempt, report):
 
 # --- family: probe (optional, site-specific) --------------------------------
 
-# The rule itself lives in hooks/_exec_guard.py, and it is the SAME OBJECT
+# The rule itself lives in core/common/_exec_guard.py, and it is the SAME OBJECT
 # recall imports for its `check:` field -- not a copy of it, not "the same by
 # construction". It was two copies once: the curl blocklist became an
 # allowlist here while the recall copy kept every hole, for the length of one
@@ -590,7 +590,7 @@ def run_probes(path, allow, report):
 
     This is the same constraint as recall's `check:` field, and since
     2026-08-05 it is literally the same code: both import
-    hooks/_exec_guard.py. Saying "the same by construction" while keeping two
+    core/common/_exec_guard.py. Saying "the same by construction" while keeping two
     copies is how the two drifted -- the copies were fixed one at a time, and
     for the length of one commit the recall side still accepted `-o/tmp/loot`.
 

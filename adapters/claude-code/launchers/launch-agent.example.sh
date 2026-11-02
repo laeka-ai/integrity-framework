@@ -27,7 +27,7 @@ Roles shipped as examples:
   builder     write-heavy: the full mutation gate battery
   researcher  read-heavy: a write perimeter + a response ceiling
 
-Role <r> loads adapters/claude-code/launchers/settings.<r>.example.json, with one deliberate
+Role <r> loads adapters/claude-code/settings.<r>.example.json, with one deliberate
 exception: "builder" loads settings.example.json, the canonical file the
 test suites check.
 
@@ -164,8 +164,8 @@ fi
 #    Point HARNESS_SETTINGS at your own file to skip all of this.
 # ---------------------------------------------------------------------------
 case "$role" in
-  builder) settings_src="$HARNESS_HOME/adapters/claude-code/adapters/claude-code/launchers/settings.example.json" ;;
-  *)       settings_src="$HARNESS_HOME/adapters/claude-code/adapters/claude-code/launchers/settings.$role.example.json" ;;
+  builder) settings_src="$HARNESS_HOME/adapters/claude-code/settings.example.json" ;;
+  *)       settings_src="$HARNESS_HOME/adapters/claude-code/settings.$role.example.json" ;;
 esac
 
 if [[ -n "${HARNESS_SETTINGS:-}" ]]; then
@@ -177,7 +177,7 @@ elif [[ -r "$settings_src" ]]; then
 else
   echo "launch-agent: no settings for role '$role' (looked for $settings_src)" >&2
   echo "launch-agent: available examples:" >&2
-  ls -1 "$HARNESS_HOME"/adapters/claude-code/adapters/claude-code/launchers/settings*.example.json >&2 || true
+  ls -1 "$HARNESS_HOME"/adapters/claude-code/settings*.example.json >&2 || true
   exit 1
 fi
 

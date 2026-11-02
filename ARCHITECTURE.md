@@ -33,7 +33,7 @@ suites drive it and how the quickstart makes a gate bite:
 
 ```sh
 echo '{"tool_name":"Bash","tool_input":{"command":"sudo systemctl restart nginx"}}' \
-  | python3 core/gates/destructive-command-gate.py ; echo "exit=$?"
+  | python3 adapters/claude-code/hooks/destructive-command-gate.py ; echo "exit=$?"
 ```
 
 Three consequences worth stating out loud.
@@ -49,7 +49,7 @@ the agent to route around gates, and it takes exactly one such gate to poison
 the credibility of all the others.
 
 **On `UserPromptSubmit`, exit 2 erases the operator's prompt.** So the hooks
-wired on that event (`core/shield/shield-inject.py`, `core/recall/recall-inject.py`)
+wired on that event (`adapters/claude-code/hooks/shield-inject.py`, `adapters/claude-code/hooks/recall-inject.py`)
 never exit non-zero at all, whatever happens inside them. Their output is
 context added to the turn, never a veto.
 
@@ -186,13 +186,13 @@ nobody runs, which is a code path that is already broken.
 ## 3. The module map
 
 ```
-                          core/gates/_hook.py                core/gates/_exec_guard.py
+                          core/common/_hook.py                core/common/_exec_guard.py
                 (gate_stat, read_stdin_json, mask_secrets,   (argv allowlist
                  STATE_DIR, GATE_STATS, transcript helpers)   per binary)
                                  |                            |     |
    +---------+---------+---------+---------+---------+--------+--+  |
    |         |         |         |         |         |           |  |
-core/gates/   memory/   shield/   recall/  sentinel/ governor/   watch/  |
+adapters/claude-code/hooks/   memory/   shield/   recall/  sentinel/ governor/   watch/  |
 12 gates  1 gate   2 hooks   2 hooks   health    2 judges   indexer |
 2 stamps           registry   engine   checks    proposal   server  |
                    rubric    curation  ^         trial      analyst |
@@ -200,7 +200,7 @@ core/gates/   memory/   shield/   recall/  sentinel/ governor/   watch/  |
                                        +--------- check: and probe -+
 ```
 
-`core/gates/` holds the **only** two shared sockets: `_hook.py` (journal, state
+`adapters/claude-code/hooks/` holds the **only** two shared sockets: `_hook.py` (journal, state
 directory, stdin protocol) and `_exec_guard.py` (the rule for running a
 command line that came out of a CONFIG FILE, used by the sentinel's probe file
 and by recall's `check:` field). Both are stdlib-only, and both are private by
@@ -226,10 +226,10 @@ Who depends on whom, in full:
 
 | Module | Depends on | Nothing depends on it |
 |---|---|---|
-| `core/gates/_hook.py` | stdlib only | (it is the socket) |
-| `core/gates/_exec_guard.py` | stdlib only | (it is the second socket: `core/recall/`, `core/sentinel/`) |
-| `core/gates/*-gate.py` | `_hook` | yes, each gate is a leaf |
-| `core/memory/memory-verdict-gate.py` | `_hook` | yes |
+| `core/common/_hook.py` | stdlib only | (it is the socket) |
+| `core/common/_exec_guard.py` | stdlib only | (it is the second socket: `core/recall/`, `core/sentinel/`) |
+| `adapters/claude-code/hooks/*-gate.py` | `_hook` | yes, each gate is a leaf |
+| `adapters/claude-code/hooks/memory-verdict-gate.py` | `_hook` | yes |
 | `core/shield/` | `_hook`, `core/shield/_registry.py` | yes |
 | `core/recall/` | `_hook`, `_exec_guard`, `core/recall/recall.py` (engine, reused by `curate.py` as its own validator) | yes |
 | `core/sentinel/` | `_hook`, `_exec_guard`; READS settings files and the journal | yes |
@@ -422,9 +422,10 @@ to a wildcard "just to test from the laptop" and then leaves that way.
 
 ```
 core/                    host-neutral: the exit-code contract, the journal, the checks
-  gates/                 gates + the shared helper (_hook.py, _exec_guard.py)
-  governor/ shield/ memory/ recall/ sentinel/
-adapters/claude-code/    everything that knows Claude Code: launcher, settings examples, units
+  common/                the shared helpers (_hook.py, _exec_guard.py)
+  governor/ shield/ recall/ sentinel/   the engines (no host field is read here)
+adapters/claude-code/    everything that knows Claude Code: hooks/ (every entry point that reads
+                         its stdin fields or transcript), settings examples, launchers/, units
 tools/                   optional panels: mission-control/, watch/
 docs/                    one page per module and per gate
 tests/                   one suite per module, zero network
@@ -434,9 +435,10 @@ The core speaks only the contract of section 1 (JSON on stdin, exit 0 or 2,
 stderr, journal). An adapter wires that contract into one host.
 
 Known limit, kept on purpose: the gates read the Claude Code payload field names
-(`tool_name`, `tool_input`, `Bash`, `Write`, `Edit`). They live in `core/gates/`
-because the sentinel, recall and the panels import `_hook.py` and `_exec_guard.py`
-from there, and splitting a shared helper from its first user would only add a
-copy. Hosts with another payload shape map their event into this one in their
-adapter. A second adapter (part 2 of this update) will show whether the payload
-reading needs its own seam.
+(`tool_name`, `tool_input`, `Bash`, `Write`, `Edit`) and its transcript layout, so every
+entry point lives in `adapters/claude-code/hooks/` (the transcript reader is
+`_transcript.py` there). What the sentinel, recall, the governor and the panels import,
+`core/common/_hook.py` (state directory, journal, secret masking) and
+`core/common/_exec_guard.py`, has no host field in it and stays in core. Hosts with
+another payload shape map their event into this one in their adapter. A second adapter
+(part 2 of this update) will show whether the payload reading needs its own seam.

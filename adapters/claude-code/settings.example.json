@@ -15,7 +15,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/shield/shield-inject.py --agent builder"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/shield-inject.py --agent builder"
           }
         ]
       }
@@ -26,7 +26,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/shield/shield-reviewer.py --agent builder"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/shield-reviewer.py --agent builder"
           }
         ]
       }
@@ -37,19 +37,19 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/gates/home-prefix-gate.py"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/home-prefix-gate.py"
           },
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/gates/grep-quantifier-gate.py"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/grep-quantifier-gate.py"
           },
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/gates/destructive-command-gate.py"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/destructive-command-gate.py"
           },
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/gates/hook-retire-gate.py"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/hook-retire-gate.py"
           }
         ]
       },
@@ -58,27 +58,27 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/gates/interlock-gate.py"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/interlock-gate.py"
           },
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/gates/settings-go-gate.py"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/settings-go-gate.py"
           },
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/gates/shell-false-success-gate.py"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/shell-false-success-gate.py"
           },
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/gates/destructive-dry-run-gate.py"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/destructive-dry-run-gate.py"
           },
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/gates/isolated-llm-measure-gate.py"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/isolated-llm-measure-gate.py"
           },
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/memory/memory-verdict-gate.py"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/memory-verdict-gate.py"
           }
         ]
       }

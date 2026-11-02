@@ -55,13 +55,13 @@ hooks directory is a legitimate way to use this.
 
 | Module | What it does |
 |:--|:--|
-| **`core/gates/`** | **12 gates** on what the agent runs and writes, plus the shared helper and two stamp CLIs. The thirteenth gate ships with `core/memory/`. Each one exists because something went wrong once. |
+| **`adapters/claude-code/hooks/`** | **12 gates** on what the agent runs and writes, plus the shared helper and two stamp CLIs. The thirteenth gate ships with `core/memory/`. Each one exists because something went wrong once. |
 | **`core/shield/`** | Behavioral rules in **three layers**: injected at the moment of risk, standing format invariants, and a reviewer that judges the outgoing message before it is displayed. |
 | **`core/memory/`** | **Statutory memory**: a verdict on top, a closed status vocabulary, and an index that carries the state of what it points at. |
 | **`core/recall/`** | A catalog that answers **"we already built this"** before an agent rebuilds it, with an executable liveness check per entry. |
 | **`core/sentinel/`** | Daily health checks that **discover** what they audit by reading your wiring. Its central check finds gates that are wired but silent. |
 | **`core/governor/`** | New rules face **two adversarial judges**, then a seven-day observation trial, before anything gets armed. |
-| **`watch/`** | A read-only local panel over gates and sessions, with a post-hoc analyst that proposes and never acts. |
+| **`tools/watch/`** | A read-only local panel over gates and sessions, with a post-hoc analyst that proposes and never acts. |
 | **`tools/mission-control/`** | A read-only local panel over the **present**: which roles are alive, what is scheduled, and what is waiting on a human. |
 | **`adapters/claude-code/launchers/`** | Wiring templates: example settings per role, a vault pattern, and systemd units that carry the PATH trap's fix. |
 

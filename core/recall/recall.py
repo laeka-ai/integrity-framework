@@ -58,7 +58,7 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, os.pardir, "gates"))
+sys.path.insert(0, os.path.join(HERE, os.pardir, "common"))
 from _hook import STATE_DIR  # noqa: E402
 # The guard of the `check:` field, shared with the sentinel's probe file: one
 # rule, one implementation. Imported plainly, like _hook above -- without it
@@ -324,7 +324,7 @@ def path_exists(p):
 #      their own: neither has a write or an upload primitive, so for those two
 #      the allowlist plus the no-shell rule IS the whole guarantee.
 #
-# Steps 2 and 3 are hooks/_exec_guard.py, imported at the top of this file and
+# Steps 2 and 3 are core/common/_exec_guard.py, imported at the top of this file and
 # shared with the sentinel's probe file, which executes operator-written lines
 # under the same danger. They were two copies for a while, and the copies
 # diverged: the sentinel replaced its curl blocklist with an allowlist and

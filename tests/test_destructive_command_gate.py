@@ -18,7 +18,7 @@ import unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-HOOK = HERE.parent / "core" / "gates" / "destructive-command-gate.py"
+HOOK = HERE.parent / "adapters" / "claude-code" / "hooks" / "destructive-command-gate.py"
 
 # Commands the gate MUST block with the default families (1, 2, 6).
 MUST_BLOCK = [

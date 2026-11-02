@@ -16,7 +16,7 @@ import unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-HOOK = HERE.parent / "core" / "gates" / "workflow-gate.py"
+HOOK = HERE.parent / "adapters" / "claude-code" / "hooks" / "workflow-gate.py"
 
 
 def run_hook(stdin_text: str, env_extra: dict) -> subprocess.CompletedProcess:

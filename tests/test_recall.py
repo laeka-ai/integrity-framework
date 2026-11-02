@@ -36,8 +36,9 @@ ROOT = HERE.parent
 RECALL = ROOT / "core" / "recall"
 ENGINE = RECALL / "recall.py"
 CURATE = RECALL / "curate.py"
-INJECT = RECALL / "recall-inject.py"
-STAGING_HOOK = RECALL / "recall-staging.py"
+HOOKS = ROOT / "adapters" / "claude-code" / "hooks"
+INJECT = HOOKS / "recall-inject.py"
+STAGING_HOOK = HOOKS / "recall-staging.py"
 
 _counter = itertools.count()
 

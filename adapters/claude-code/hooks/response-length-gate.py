@@ -43,8 +43,10 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, os.pardir, os.pardir, "core", "common"))
 try:
-    from _hook import assistant_text_blocks, gate_stat, load_transcript
+    from _hook import gate_stat
+    from _transcript import assistant_text_blocks, load_transcript
 except Exception:
     sys.exit(0)   # fail-open: a broken helper must never block the work
 

@@ -66,7 +66,7 @@ mkdir -p demo/.claude state
 
 export HARNESS_HOME=/tmp/agent-controls-quickstart/agent-controls  # the checkout
 export HARNESS_STATE_DIR=/tmp/agent-controls-quickstart/state      # where state lives
-export HARNESS_HOOK_DIRS=$HARNESS_HOME/hooks                       # dirs holding live hooks
+export HARNESS_HOOK_DIRS=$HARNESS_HOME/adapters/claude-code/hooks                       # dirs holding live hooks
 export HARNESS_WRITE_SCOPE=/tmp/agent-controls-quickstart/demo     # this agent's perimeter
 
 cd /tmp/agent-controls-quickstart/demo
@@ -76,7 +76,7 @@ printf '%s\n' "$HARNESS_HOME" "$HARNESS_STATE_DIR" "$HARNESS_HOOK_DIRS" "$HARNES
 ```
 /tmp/agent-controls-quickstart/agent-controls
 /tmp/agent-controls-quickstart/state
-/tmp/agent-controls-quickstart/agent-controls/hooks
+/tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks
 /tmp/agent-controls-quickstart/demo
 ```
 
@@ -103,16 +103,16 @@ cat > .claude/settings.json <<'JSON'
         "matcher": "Bash",
         "hooks": [
           {"type": "command",
-           "command": "python3 $HARNESS_HOME/hooks/home-prefix-gate.py"},
+           "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/home-prefix-gate.py"},
           {"type": "command",
-           "command": "python3 $HARNESS_HOME/hooks/destructive-command-gate.py"}
+           "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/destructive-command-gate.py"}
         ]
       },
       {
         "matcher": "Write|Edit|MultiEdit",
         "hooks": [
           {"type": "command",
-           "command": "python3 $HARNESS_HOME/hooks/scope-write-gate.py"}
+           "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/scope-write-gate.py"}
         ]
       }
     ]
@@ -124,13 +124,13 @@ JSON
 Ask the sentinel what it sees, before running anything:
 
 ```sh
-python3 $HARNESS_HOME/sentinel/sentinel.py --settings .claude/settings.json --enumerate
+python3 $HARNESS_HOME/core/sentinel/sentinel.py --settings .claude/settings.json --enumerate
 ```
 
 ```
-hook  PreToolUse         script     /tmp/agent-controls-quickstart/agent-controls/hooks/home-prefix-gate.py
-hook  PreToolUse         script     /tmp/agent-controls-quickstart/agent-controls/hooks/destructive-command-gate.py
-hook  PreToolUse         script     /tmp/agent-controls-quickstart/agent-controls/hooks/scope-write-gate.py
+hook  PreToolUse         script     /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks/home-prefix-gate.py
+hook  PreToolUse         script     /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks/destructive-command-gate.py
+hook  PreToolUse         script     /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks/scope-write-gate.py
 total: 3 hooks wired across 1 settings file(s)
 ```
 
@@ -152,7 +152,7 @@ the payload the agent CLI would send. That is also how the test suites do it.
 
 ```sh
 echo '{"tool_name":"Bash","tool_input":{"command":"echo hello && ls /tmp"}}' \
-  | python3 $HARNESS_HOME/hooks/home-prefix-gate.py
+  | python3 $HARNESS_HOME/adapters/claude-code/hooks/home-prefix-gate.py
 echo "exit=$?"
 ```
 
@@ -171,7 +171,7 @@ looks exactly like a real measurement and is not one.
 
 ```sh
 echo '{"tool_name":"Bash","tool_input":{"command":"HOME=/tmp/elsewhere python3 -c \"print(1)\""}}' \
-  | python3 $HARNESS_HOME/hooks/home-prefix-gate.py
+  | python3 $HARNESS_HOME/adapters/claude-code/hooks/home-prefix-gate.py
 echo "exit=$?"
 ```
 
@@ -189,7 +189,7 @@ hands over a working alternative gets obeyed.
 
 ```sh
 echo '{"tool_name":"Bash","tool_input":{"command":"sudo systemctl restart nginx"}}' \
-  | python3 $HARNESS_HOME/hooks/destructive-command-gate.py
+  | python3 $HARNESS_HOME/adapters/claude-code/hooks/destructive-command-gate.py
 echo "exit=$?"
 ```
 
@@ -206,7 +206,7 @@ tag, and the reason is mandatory:
 
 ```sh
 echo '{"tool_name":"Bash","tool_input":{"command":"sudo systemctl restart nginx [DESTRUCTIVE-AUTHORIZED reason=operator_asked_for_a_restart]"}}' \
-  | python3 $HARNESS_HOME/hooks/destructive-command-gate.py
+  | python3 $HARNESS_HOME/adapters/claude-code/hooks/destructive-command-gate.py
 echo "exit=$?"
 ```
 
@@ -223,7 +223,7 @@ authorization that leaves no trace is an authorization nobody can audit.
 
 ```sh
 echo '{"tool_name":"Write","tool_input":{"file_path":"/tmp/agent-controls-quickstart/elsewhere/notes.md","content":"x"}}' \
-  | python3 $HARNESS_HOME/hooks/scope-write-gate.py
+  | python3 $HARNESS_HOME/adapters/claude-code/hooks/scope-write-gate.py
 echo "exit=$?"
 ```
 
@@ -234,7 +234,7 @@ BLOCKED (scope-write gate): writing OUTSIDE this agent's perimeter.
 Each role owns a perimeter. Writing code or mutating configuration outside it is another role's gesture, and that drift is silent: it looks like work done, it lands where nobody reviews it.
 Normal route: leave a dated deliverable INSIDE your perimeter and hand the gesture over to the role that owns it.
 Sanctioned one-shot, only AFTER an explicit human GO:
-  python3 /tmp/agent-controls-quickstart/agent-controls/hooks/scope-stamp.py <prefix> --reason '...'
+  python3 /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks/scope-stamp.py <prefix> --reason '...'
 (30-minute window, ONE prefix, journaled as skip-stamp.)
 Widen the perimeter for good instead: HARNESS_WRITE_SCOPE (colon-separated).
 Session kill-switch: HARNESS_SCOPE_WRITE_GATE_DISABLE=1
@@ -275,7 +275,7 @@ never runs. That failure is silent and reads exactly like a good day. The
 sentinel is what refuses to accept "present" as proof of "alive".
 
 ```sh
-python3 $HARNESS_HOME/sentinel/sentinel.py --settings .claude/settings.json
+python3 $HARNESS_HOME/core/sentinel/sentinel.py --settings .claude/settings.json
 echo "exit=$?"
 ```
 
@@ -285,17 +285,17 @@ OK   settings  settings.json - 3 hooks wired
 OK   script    home-prefix-gate.py - present, syntax OK (settings.json)
 OK   script    destructive-command-gate.py - present, syntax OK (settings.json)
 OK   script    scope-write-gate.py - present, syntax OK (settings.json)
-WARN orphan    destructive-dry-run-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/hooks but wired in NO settings file
-WARN orphan    grep-quantifier-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/hooks but wired in NO settings file
-WARN orphan    hook-retire-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/hooks but wired in NO settings file
-WARN orphan    interlock-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/hooks but wired in NO settings file
+WARN orphan    destructive-dry-run-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    grep-quantifier-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    hook-retire-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    interlock-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
 SKIP orphan    interlock-stamp.py - exempt, run by hand by design
-WARN orphan    isolated-llm-measure-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/hooks but wired in NO settings file
-WARN orphan    response-length-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/hooks but wired in NO settings file
+WARN orphan    isolated-llm-measure-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    response-length-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
 SKIP orphan    scope-stamp.py - exempt, run by hand by design
-WARN orphan    settings-go-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/hooks but wired in NO settings file
-WARN orphan    shell-false-success-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/hooks but wired in NO settings file
-WARN orphan    workflow-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/hooks but wired in NO settings file
+WARN orphan    settings-go-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    shell-false-success-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    workflow-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
 OK   journal   gate-stats.jsonl - fresh (0.0 h), last line valid JSON
 OK   coverage  home-prefix-gate.py - 2 trace(s) in the journal over 7 days
 OK   coverage  destructive-command-gate.py - 2 trace(s) in the journal over 7 days
@@ -308,7 +308,7 @@ How to read it:
 
 - the three `coverage` lines are the point of the whole exercise: each wired
   gate left a trace, so each one is provably ALIVE, not merely present;
-- the nine `orphan` WARNs are correct and expected here. `core/gates/` ships twelve
+- the nine `orphan` WARNs are correct and expected here. `adapters/claude-code/hooks/` ships twelve
   gates and you wired three; the other nine sit on disk, wired nowhere. A gate
   somebody believes is armed and is not, is exactly the expensive case;
 - the two `SKIP orphan` lines are the stamp tools, exempt by design (a human
@@ -349,13 +349,13 @@ json.dump(d, open(p, "w"), indent=2)
 print("destructive-command-gate unwired from settings.json")
 PY
 
-python3 $HARNESS_HOME/sentinel/sentinel.py --settings .claude/settings.json \
+python3 $HARNESS_HOME/core/sentinel/sentinel.py --settings .claude/settings.json \
   | grep -E 'destructive-command|VERDICT'
 ```
 
 ```
 destructive-command-gate unwired from settings.json
-WARN orphan    destructive-command-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/hooks but wired in NO settings file
+WARN orphan    destructive-command-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
 VERDICT WARN - 6 OK / 10 WARN / 0 FAIL / 2 SKIP
 ```
 

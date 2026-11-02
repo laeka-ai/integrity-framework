@@ -13,7 +13,7 @@ import unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-HOOK = HERE.parent / "core" / "memory" / "memory-verdict-gate.py"
+HOOK = HERE.parent / "adapters" / "claude-code" / "hooks" / "memory-verdict-gate.py"
 
 
 def run_hook(payload: dict, env_extra: dict) -> subprocess.CompletedProcess:

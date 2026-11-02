@@ -59,18 +59,19 @@ import tempfile
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
-sys.path.insert(0, os.path.join(HERE, os.pardir, "gates"))
+sys.path.insert(0, os.path.join(HERE, os.pardir, os.pardir, os.pardir, "core", "shield"))
+sys.path.insert(0, os.path.join(HERE, os.pardir, os.pardir, os.pardir, "core", "common"))
 try:
-    from _hook import (STATE_DIR, assistant_text_blocks, gate_stat,
-                       load_transcript, read_stdin_json)
+    from _transcript import assistant_text_blocks, load_transcript
+    from _hook import (STATE_DIR, gate_stat,
+                       read_stdin_json)
     from _registry import load_triggers
 except Exception:
     sys.exit(0)   # no helper, no layer: fail-open before anything else
 
 HOOK = "shield-reviewer"
 DISABLE_ENV = "HARNESS_SHIELD_REVIEWER_GATE_DISABLE"
-RUBRIC_DEFAULT = os.path.join(HERE, "reviewer-rubric.example.md")
+RUBRIC_DEFAULT = os.path.join(HERE, os.pardir, os.pardir, os.pardir, "core", "shield", "reviewer-rubric.example.md")
 FRESHNESS_DEFAULT = 2700          # 45 minutes
 TIMEOUT_DEFAULT = 12
 MODEL_DEFAULT = "haiku"

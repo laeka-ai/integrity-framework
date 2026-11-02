@@ -53,7 +53,7 @@ import os
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, os.pardir, os.pardir, "core", "gates"))
+sys.path.insert(0, os.path.join(HERE, os.pardir, os.pardir, "core", "common"))
 import _hook   # noqa: E402  -- same state dir as every gate
 
 # The panel binds HERE and nowhere else. See the module docstring.

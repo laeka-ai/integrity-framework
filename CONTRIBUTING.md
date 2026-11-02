@@ -93,7 +93,7 @@ the incident report you were missing, or exactly the proof the idea was noise.
 
 ### 1. The skeleton
 
-One file, `core/gates/<name>-gate.py`, standard library only. This is the full
+One file, `adapters/claude-code/hooks/<name>-gate.py`, standard library only. This is the full
 shape, and every existing gate follows it:
 
 ```python
@@ -202,7 +202,7 @@ Two naming rules that are easy to get wrong:
   its filename produces a false WARN forever.
 - **the kill-switch is `HARNESS_<NAME>_GATE_DISABLE`**, with `<NAME>` the file
   stem upper-cased and dashes turned into underscores:
-  `core/gates/scope-write-gate.py` -> `HARNESS_SCOPE_WRITE_GATE_DISABLE`. It is
+  `adapters/claude-code/hooks/scope-write-gate.py` -> `HARNESS_SCOPE_WRITE_GATE_DISABLE`. It is
   checked FIRST, and it journals `skip-disabled` before returning 0. A kill
   switch that returns silently is a hole; one that journals is a deliberate,
   countable decision.
@@ -293,7 +293,7 @@ the pull request, unplug the gate by hand and check the suite goes red.
 The cheapest mutation is turning the refusal into an allow:
 
 ```sh
-# in core/gates/<name>-gate.py, change the block path:
+# in adapters/claude-code/hooks/<name>-gate.py, change the block path:
 #     return 2      ->      return 0
 python3 -m pytest tests/test_<name>_gate.py -q
 ```
@@ -333,7 +333,7 @@ goes red).
 
 ### 6. Wire it, or do not
 
-Adding a gate to `adapters/claude-code/launchers/settings.example.json` is a separate decision from
+Adding a gate to `adapters/claude-code/settings.example.json` is a separate decision from
 adding the gate. The examples are not an inventory of everything that exists;
 they are two opinionated starting points (`builder`, write-heavy;
 `researcher`, read-heavy). A new gate can perfectly well ship unwired, with its

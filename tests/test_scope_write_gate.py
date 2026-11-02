@@ -18,8 +18,8 @@ import unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-HOOK = HERE.parent / "core" / "gates" / "scope-write-gate.py"
-STAMP_CLI = HERE.parent / "core" / "gates" / "scope-stamp.py"
+HOOK = HERE.parent / "adapters" / "claude-code" / "hooks" / "scope-write-gate.py"
+STAMP_CLI = HERE.parent / "adapters" / "claude-code" / "hooks" / "scope-stamp.py"
 
 LEAKY_ENV = ("HARNESS_WRITE_SCOPE", "HARNESS_SCOPE_WRITE_STAMP",
              "HARNESS_SCOPE_WRITE_GATE_DISABLE", "HARNESS_STATE_DIR",

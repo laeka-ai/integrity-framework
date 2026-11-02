@@ -423,7 +423,7 @@ class TestProbeExecution(SentinelBase):
         """Pure functions, and the SAME OBJECT as the one recall's `check:`
         field uses -- not "the same by construction", which is what two copies
         of it claimed while one still accepted `-o/tmp/loot` and the other did
-        not. Both import hooks/_exec_guard.py, so `is` holds here and a fix
+        not. Both import core/common/_exec_guard.py, so `is` holds here and a fix
         can no longer land on one side only."""
         mod = sentinel_module()
         spec = importlib.util.spec_from_file_location(

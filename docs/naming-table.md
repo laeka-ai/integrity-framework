@@ -8,8 +8,8 @@ page as the contract.
 
 | Concept | Directory |
 |---|---|
-| Cross-cutting hook helper + gates | `core/gates/` |
-| Shared guard for executing a config-file command line | `core/gates/_exec_guard.py` |
+| Cross-cutting hook helper + gates | `adapters/claude-code/hooks/` |
+| Shared guard for executing a config-file command line | `core/common/_exec_guard.py` |
 | Behavioral rule enforcement (3 layers) | `core/shield/` |
 | Statutory memory format + its gate | `core/memory/` |
 | "Already built" artifact catalog | `core/recall/` |

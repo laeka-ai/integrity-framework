@@ -36,6 +36,7 @@ import sys
 import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, os.pardir, os.pardir, "core", "common"))
 try:
     from _hook import STATE_DIR, gate_stat, read_stdin_json
 except Exception:

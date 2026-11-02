@@ -20,7 +20,7 @@ import unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-HOOK = HERE.parent / "core" / "gates" / "isolated-llm-measure-gate.py"
+HOOK = HERE.parent / "adapters" / "claude-code" / "hooks" / "isolated-llm-measure-gate.py"
 
 CLI = "claude"        # binary the gate watches by default
 FLAG = "-p"           # headless flag

@@ -25,9 +25,10 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 SHIELD = ROOT / "core" / "shield"
-INJECT = SHIELD / "shield-inject.py"
-REVIEWER = SHIELD / "shield-reviewer.py"
-LAUNCHERS = ROOT / "adapters" / "claude-code" / "launchers"
+HOOKS = ROOT / "adapters" / "claude-code" / "hooks"
+INJECT = HOOKS / "shield-inject.py"
+REVIEWER = HOOKS / "shield-reviewer.py"
+LAUNCHERS = ROOT / "adapters" / "claude-code"
 
 
 def run_hook(script: Path, args, payload, env_extra, raw_stdin=None):
@@ -266,7 +267,7 @@ class TestShieldWiring(unittest.TestCase):
                      "settings.researcher.example.json"):
             data = json.loads(self.settings(name))
             wired = json.dumps(data["hooks"].get("UserPromptSubmit", []))
-            self.assertIn("shield/shield-inject.py", wired,
+            self.assertIn("hooks/shield-inject.py", wired,
                           "layer 1 UNWIRED from %s" % name)
 
     def test_t17_layer3_wired_on_stop(self):
@@ -274,7 +275,7 @@ class TestShieldWiring(unittest.TestCase):
                      "settings.researcher.example.json"):
             data = json.loads(self.settings(name))
             wired = json.dumps(data["hooks"].get("Stop", []))
-            self.assertIn("shield/shield-reviewer.py", wired,
+            self.assertIn("hooks/shield-reviewer.py", wired,
                           "layer 3 UNWIRED from %s" % name)
 
 

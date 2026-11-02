@@ -36,7 +36,7 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, os.pardir, "gates"))
+sys.path.insert(0, os.path.join(HERE, os.pardir, os.pardir, os.pardir, "core", "common"))
 try:
     from _hook import gate_stat, read_stdin_json
 except Exception:
@@ -44,7 +44,7 @@ except Exception:
 
 HOOK = "recall-inject"
 DISABLE_ENV = "HARNESS_RECALL_INJECT_GATE_DISABLE"
-ENGINE = os.path.join(HERE, "recall.py")
+ENGINE = os.path.join(HERE, os.pardir, os.pardir, os.pardir, "core", "recall", "recall.py")
 MIN_PROMPT_CHARS = 4
 TIMEOUT_S = 3
 

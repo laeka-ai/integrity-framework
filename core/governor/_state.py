@@ -31,7 +31,7 @@ import sys
 from datetime import date, datetime, timedelta
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, os.pardir, "gates"))
+sys.path.insert(0, os.path.join(HERE, os.pardir, "common"))
 
 from _hook import GATE_STATS, STATE_DIR, gate_stat, mask_secrets  # noqa: E402,F401
 

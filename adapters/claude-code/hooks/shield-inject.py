@@ -44,8 +44,8 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
-sys.path.insert(0, os.path.join(HERE, os.pardir, "gates"))
+sys.path.insert(0, os.path.join(HERE, os.pardir, os.pardir, os.pardir, "core", "shield"))
+sys.path.insert(0, os.path.join(HERE, os.pardir, os.pardir, os.pardir, "core", "common"))
 try:
     from _hook import STATE_DIR, gate_stat, read_stdin_json
     from _registry import active_triggers

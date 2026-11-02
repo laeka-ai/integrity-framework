@@ -219,7 +219,7 @@ default is the narrow choice:
 
 Adding a role is three steps and no code:
 
-1. write `adapters/claude-code/launchers/settings.<role>.example.json` (start from the closest
+1. write `adapters/claude-code/settings.<role>.example.json` (start from the closest
    shipped example);
 2. put the role's system prompt wherever you keep it, and point
    `HARNESS_ROLE_PROMPT` at it;
@@ -234,6 +234,6 @@ has no settings file is a hard error naming the file it looked for.
 |---|---|
 | `adapters/claude-code/launchers/launch-agent.example.sh` | the parameterized launcher template |
 | `adapters/claude-code/launchers/vault.example.sh` | build, encrypt, inspect and verify the vault |
-| `adapters/claude-code/launchers/settings.example.json` | EXAMPLE wiring, `builder` role |
-| `adapters/claude-code/launchers/settings.researcher.example.json` | EXAMPLE wiring, `researcher` role |
+| `adapters/claude-code/settings.example.json` | EXAMPLE wiring, `builder` role |
+| `adapters/claude-code/settings.researcher.example.json` | EXAMPLE wiring, `researcher` role |
 | `adapters/claude-code/launchers/systemd/*.service`, `*.timer` | EXAMPLE user units, PATH declared |

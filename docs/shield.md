@@ -128,8 +128,8 @@ retry in a loop freezes the pane. Those turns pass and are journaled.
 
 | Path | Role |
 |---|---|
-| `core/shield/shield-inject.py` | layer 1, `UserPromptSubmit` |
-| `core/shield/shield-reviewer.py` | layer 3, `Stop` |
+| `adapters/claude-code/hooks/shield-inject.py` | layer 1, `UserPromptSubmit` |
+| `adapters/claude-code/hooks/shield-reviewer.py` | layer 3, `Stop` |
 | `core/shield/_registry.py` | shared registry loader (PyYAML optional) |
 | `core/shield/trigger-registry.example.yaml` | EXAMPLE trigger registry |
 | `core/shield/reviewer-rubric.example.md` | EXAMPLE standing invariants |
@@ -167,9 +167,9 @@ Both example launcher settings carry the two layers:
 
 ```json
 "UserPromptSubmit": [{"matcher": "", "hooks": [{"type": "command",
-  "command": "python3 $HARNESS_HOME/shield/shield-inject.py --agent builder"}]}],
+  "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/shield-inject.py --agent builder"}]}],
 "Stop": [{"matcher": "", "hooks": [{"type": "command",
-  "command": "python3 $HARNESS_HOME/shield/shield-reviewer.py --agent builder"}]}]
+  "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/shield-reviewer.py --agent builder"}]}]
 ```
 
 The role name (`--agent`, or `HARNESS_AGENT`) names the marker file, so two

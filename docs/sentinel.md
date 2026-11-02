@@ -126,7 +126,7 @@ See `core/sentinel/probes.example.txt` for the format.
 
 **A probe line is an ARGV, not a shell line.** The sentinel runs unattended
 from a timer, so a config file must never become an arbitrary execution
-surface. Steps 2 and 3 below live in `core/gates/_exec_guard.py` and are the same
+surface. Steps 2 and 3 below live in `core/common/_exec_guard.py` and are the same
 OBJECT recall's `check:` field uses (`core/recall/recall.py`, `run_check`): one
 implementation, imported twice, and `tests/test_sentinel.py` asserts the
 identity rather than claiming it. It was two copies for a while, and they
@@ -245,7 +245,7 @@ Description=Harness sentinel, daily health check
 [Service]
 Type=oneshot
 Environment=HARNESS_STATE_DIR=%h/.harness
-ExecStart=/usr/bin/python3 %h/agent-controls/sentinel/sentinel.py \
+ExecStart=/usr/bin/python3 %h/agent-controls/core/sentinel/sentinel.py \
   --settings %h/.claude/settings.json
 ```
 
@@ -278,7 +278,7 @@ next boot instead of skipping the day in silence.
 ```cron
 # EXAMPLE -- daily health check, 06:30, output goes to the report file.
 30 6 * * * HARNESS_STATE_DIR=$HOME/.harness /usr/bin/python3 \
-  $HOME/agent-controls/sentinel/sentinel.py --settings $HOME/.claude/settings.json --quiet
+  $HOME/agent-controls/core/sentinel/sentinel.py --settings $HOME/.claude/settings.json --quiet
 ```
 
 Cron runs with a minimal environment. Anything the sentinel needs
@@ -293,7 +293,7 @@ is reported, never assumed good.
 |---|---|---|
 | `HARNESS_STATE_DIR` | State directory | `~/.harness` |
 | `HARNESS_GATE_STATS` | Gate-stats journal path | `$HARNESS_STATE_DIR/gate-stats.jsonl` |
-| `HARNESS_HOOK_DIRS` | Colon-separated live hook directories | harness `core/gates/` + `~/.claude/hooks` |
+| `HARNESS_HOOK_DIRS` | Colon-separated live hook directories | harness `adapters/claude-code/hooks/` + `~/.claude/hooks` |
 | `HARNESS_SENTINEL_SETTINGS` | Colon-separated settings files to audit | `~/.claude/*settings*.json` |
 | `HARNESS_SENTINEL_REPORT_DIR` | Where the daily report is written | `$HARNESS_STATE_DIR/sentinel` |
 | `HARNESS_SENTINEL_COVERAGE_DAYS` | Coverage window, in days | `7` |
@@ -319,7 +319,7 @@ that is a FAIL.
 |---|---|
 | `core/sentinel/sentinel.py` | the whole module, stdlib only |
 | `core/sentinel/probes.example.txt` | EXAMPLE site-specific probe file |
-| `core/gates/_exec_guard.py` | the probe execution guard, SHARED with recall's `check:` field |
+| `core/common/_exec_guard.py` | the probe execution guard, SHARED with recall's `check:` field |
 | `tests/test_sentinel.py` | 40 cases, no outbound network, tempdir harness |
 
 ## Journal vocabulary

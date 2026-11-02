@@ -14,7 +14,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/shield/shield-inject.py --agent researcher"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/shield-inject.py --agent researcher"
           }
         ]
       }
@@ -25,11 +25,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/gates/home-prefix-gate.py"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/home-prefix-gate.py"
           },
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/gates/grep-quantifier-gate.py"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/grep-quantifier-gate.py"
           }
         ]
       },
@@ -38,11 +38,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/gates/scope-write-gate.py"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/scope-write-gate.py"
           },
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/memory/memory-verdict-gate.py"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/memory-verdict-gate.py"
           }
         ]
       },
@@ -51,7 +51,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/gates/workflow-gate.py"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/workflow-gate.py"
           }
         ]
       }
@@ -62,11 +62,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/gates/response-length-gate.py"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/response-length-gate.py"
           },
           {
             "type": "command",
-            "command": "python3 $HARNESS_HOME/core/shield/shield-reviewer.py --agent researcher"
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/shield-reviewer.py --agent researcher"
           }
         ]
       }

@@ -5,7 +5,7 @@ frontmatter with a status taken from a closed list, a VERDICT block as the
 FIRST line of the body, and an index line that shows that status at the head
 of its summary.
 
-`core/memory/memory-verdict-gate.py` enforces the statute. PreToolUse gate on
+`adapters/claude-code/hooks/memory-verdict-gate.py` enforces the statute. PreToolUse gate on
 `Write|Edit`, exit 2 = block, fail-open, every decision journaled
 (`pass`, `block`, `skip-out-of-scope`, `skip-index`, `skip-unresolvable`,
 `skip-no-index`). The vocabulary is frozen in
@@ -220,7 +220,7 @@ nothing, which is the failure mode the whole page is written against.
 Wiring, in the `PreToolUse` matcher for `Write|Edit`:
 
 ```json
-{ "type": "command", "command": "python3 $HARNESS_HOME/memory/memory-verdict-gate.py" }
+{ "type": "command", "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/memory-verdict-gate.py" }
 ```
 
 ## Nested fields written by sync tools

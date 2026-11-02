@@ -1309,7 +1309,7 @@ class TestOptionalModules(ServedPanel):
         shutil.copytree(MC, root / "tools" / "mission-control",
                         ignore=shutil.ignore_patterns("__pycache__", "*.pyc",
                                                       "*.db"))
-        os.symlink(ROOT / "core" / "gates", root / "core" / "gates")
+        os.symlink(ROOT / "core" / "common", root / "core" / "common")
         wanted = dict(stubs)
         for name in self.server.OPTIONAL_MODULES:
             path = root / "tools" / "mission-control" / (name + ".py")

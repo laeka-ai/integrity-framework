@@ -41,7 +41,7 @@ import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, os.pardir, "gates"))
+sys.path.insert(0, os.path.join(HERE, os.pardir, os.pardir, os.pardir, "core", "common"))
 try:
     from _hook import STATE_DIR, gate_stat, read_stdin_json
 except Exception:
@@ -52,7 +52,7 @@ DISABLE_ENV = "HARNESS_RECALL_STAGING_GATE_DISABLE"
 
 CATALOG = os.path.expanduser(
     os.environ.get("HARNESS_RECALL_CATALOG")
-    or os.path.join(HERE, "CATALOG.example.md"))
+    or os.path.join(HERE, os.pardir, os.pardir, os.pardir, "core", "recall", "CATALOG.example.md"))
 STAGING = os.path.expanduser(
     os.environ.get("HARNESS_RECALL_STAGING")
     or os.path.join(STATE_DIR, "recall", "STAGING.md"))
