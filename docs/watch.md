@@ -92,7 +92,7 @@ files. Plus strict CSP, `nosniff`, `no-referrer`.
 
 ## The database is derived, and it is never published
 
-What ships is `watch/schema.sql` (the DDL) and `watch/indexer.py` (what fills
+What ships is `tools/watch/schema.sql` (the DDL) and `tools/watch/indexer.py` (what fills
 it). The database file itself is nobody's business but yours: it is an index
 of one operator's sessions.
 
@@ -214,9 +214,9 @@ server runs an incremental index pass on every dashboard request (measured at
 0.0 s when nothing changed), so the view is always fresh.
 
 ```sh
-python3 watch/indexer.py            # incremental pass
-python3 watch/indexer.py --rebuild  # throw it away and re-index
-python3 watch/server.py             # http://127.0.0.1:8815
+python3 tools/watch/indexer.py            # incremental pass
+python3 tools/watch/indexer.py --rebuild  # throw it away and re-index
+python3 tools/watch/server.py             # http://127.0.0.1:8815
 ```
 
 `server.py` alone is enough on a brand-new machine: it opens the derived
@@ -284,12 +284,12 @@ the panel:
 
 | Path | Role |
 |---|---|
-| `watch/config.py` | sources, exclusions, paths -- all resolved from the environment |
-| `watch/schema.sql` | the published DDL of the derived database |
-| `watch/indexer.py` | incremental index: transcripts + journals -> SQLite |
-| `watch/server.py` | the local read-only HTTP panel (stdlib only) |
-| `watch/analyst.py` | the post-hoc judge: proposes, never acts |
-| `watch/static/` | the UI: zero build, zero dependency, `textContent` only |
+| `tools/watch/config.py` | sources, exclusions, paths -- all resolved from the environment |
+| `tools/watch/schema.sql` | the published DDL of the derived database |
+| `tools/watch/indexer.py` | incremental index: transcripts + journals -> SQLite |
+| `tools/watch/server.py` | the local read-only HTTP panel (stdlib only) |
+| `tools/watch/analyst.py` | the post-hoc judge: proposes, never acts |
+| `tools/watch/static/` | the UI: zero build, zero dependency, `textContent` only |
 
 ## API
 

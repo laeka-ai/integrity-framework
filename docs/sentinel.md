@@ -122,12 +122,12 @@ sentinel.py --probes ~/my-probes.txt
 
 One command per line, `#` comments ignored, exit 0 is OK. Everything that is
 not allowed to run becomes a SKIP line carrying its reason, never a silence.
-See `sentinel/probes.example.txt` for the format.
+See `core/sentinel/probes.example.txt` for the format.
 
 **A probe line is an ARGV, not a shell line.** The sentinel runs unattended
 from a timer, so a config file must never become an arbitrary execution
-surface. Steps 2 and 3 below live in `hooks/_exec_guard.py` and are the same
-OBJECT recall's `check:` field uses (`recall/recall.py`, `run_check`): one
+surface. Steps 2 and 3 below live in `core/gates/_exec_guard.py` and are the same
+OBJECT recall's `check:` field uses (`core/recall/recall.py`, `run_check`): one
 implementation, imported twice, and `tests/test_sentinel.py` asserts the
 identity rather than claiming it. It was two copies for a while, and they
 diverged the way copies do -- this side was hardened first while the recall
@@ -293,7 +293,7 @@ is reported, never assumed good.
 |---|---|---|
 | `HARNESS_STATE_DIR` | State directory | `~/.harness` |
 | `HARNESS_GATE_STATS` | Gate-stats journal path | `$HARNESS_STATE_DIR/gate-stats.jsonl` |
-| `HARNESS_HOOK_DIRS` | Colon-separated live hook directories | harness `hooks/` + `~/.claude/hooks` |
+| `HARNESS_HOOK_DIRS` | Colon-separated live hook directories | harness `core/gates/` + `~/.claude/hooks` |
 | `HARNESS_SENTINEL_SETTINGS` | Colon-separated settings files to audit | `~/.claude/*settings*.json` |
 | `HARNESS_SENTINEL_REPORT_DIR` | Where the daily report is written | `$HARNESS_STATE_DIR/sentinel` |
 | `HARNESS_SENTINEL_COVERAGE_DAYS` | Coverage window, in days | `7` |
@@ -317,9 +317,9 @@ that is a FAIL.
 
 | Path | Role |
 |---|---|
-| `sentinel/sentinel.py` | the whole module, stdlib only |
-| `sentinel/probes.example.txt` | EXAMPLE site-specific probe file |
-| `hooks/_exec_guard.py` | the probe execution guard, SHARED with recall's `check:` field |
+| `core/sentinel/sentinel.py` | the whole module, stdlib only |
+| `core/sentinel/probes.example.txt` | EXAMPLE site-specific probe file |
+| `core/gates/_exec_guard.py` | the probe execution guard, SHARED with recall's `check:` field |
 | `tests/test_sentinel.py` | 40 cases, no outbound network, tempdir harness |
 
 ## Journal vocabulary

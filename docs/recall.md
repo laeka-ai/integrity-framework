@@ -52,7 +52,7 @@ boundaries, and nothing else: the catalog IS the relevance filter. Matching a
 prompt against a raw filesystem index instead would surface a hundred plausible
 paths and teach the agent to ignore the block.
 
-`recall/CATALOG.example.md` ships as a format example. Every entry in it is
+`core/recall/CATALOG.example.md` ships as a format example. Every entry in it is
 invented and none of the paths exists -- run the engine against it and it will
 correctly report them as missing, which is the behaviour to expect from an
 honest catalog. Copy it, empty it, point `HARNESS_RECALL_CATALOG` at your copy.
@@ -164,7 +164,7 @@ a constraint. Two independent barriers are:
    sink. `tests/test_recall.py` now runs each of them for real, and asserts
    the refusal, the empty loot directory AND the untouched server.
 
-   The rule lives in `hooks/_exec_guard.py` and is the same OBJECT the
+   The rule lives in `core/gates/_exec_guard.py` and is the same OBJECT the
    sentinel uses for its probe file (`tests/test_sentinel.py` asserts the
    identity). It was two copies once, and the copies diverged: the sentinel
    was hardened while this side kept the blocklist, holes included. Widening
@@ -209,14 +209,14 @@ indistinguishable from a gate that has been unwired.
 
 | Path | Role |
 |---|---|
-| `recall/recall.py` | engine: match, live verification, health pass, passive surface |
-| `recall/curate.py` | curation: promote drafts, supersede WITHOUT deleting |
-| `recall/recall-inject.py` | `UserPromptSubmit` hook: the block at prompt time |
-| `recall/recall-staging.py` | `PostToolUse` hook: catch an artifact at birth |
-| `recall/recall-refresh.sh` | rebuild the file index, then run the health pass |
-| `recall/CATALOG.example.md` | EXAMPLE catalog (every entry invented) |
-| `recall/STAGING.example.md` | EXAMPLE staging structure (empty by design) |
-| `hooks/_exec_guard.py` | the `check:` execution guard, SHARED with the sentinel's probe file |
+| `core/recall/recall.py` | engine: match, live verification, health pass, passive surface |
+| `core/recall/curate.py` | curation: promote drafts, supersede WITHOUT deleting |
+| `core/recall/recall-inject.py` | `UserPromptSubmit` hook: the block at prompt time |
+| `core/recall/recall-staging.py` | `PostToolUse` hook: catch an artifact at birth |
+| `core/recall/recall-refresh.sh` | rebuild the file index, then run the health pass |
+| `core/recall/CATALOG.example.md` | EXAMPLE catalog (every entry invented) |
+| `core/recall/STAGING.example.md` | EXAMPLE staging structure (empty by design) |
+| `core/gates/_exec_guard.py` | the `check:` execution guard, SHARED with the sentinel's probe file |
 | `tests/test_recall.py` | 62 cases, zero outbound network, zero LLM call |
 
 ## Environment
@@ -256,7 +256,7 @@ journaled as `skip-disabled`: routing around the module stays visible.
 The index refresh and the health pass belong on a timer:
 
 ```
-recall/recall-refresh.sh
+core/recall/recall-refresh.sh
 ```
 
 ## Journal vocabulary

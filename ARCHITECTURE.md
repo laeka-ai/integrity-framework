@@ -33,7 +33,7 @@ suites drive it and how the quickstart makes a gate bite:
 
 ```sh
 echo '{"tool_name":"Bash","tool_input":{"command":"sudo systemctl restart nginx"}}' \
-  | python3 hooks/destructive-command-gate.py ; echo "exit=$?"
+  | python3 core/gates/destructive-command-gate.py ; echo "exit=$?"
 ```
 
 Three consequences worth stating out loud.
@@ -49,7 +49,7 @@ the agent to route around gates, and it takes exactly one such gate to poison
 the credibility of all the others.
 
 **On `UserPromptSubmit`, exit 2 erases the operator's prompt.** So the hooks
-wired on that event (`shield/shield-inject.py`, `recall/recall-inject.py`)
+wired on that event (`core/shield/shield-inject.py`, `core/recall/recall-inject.py`)
 never exit non-zero at all, whatever happens inside them. Their output is
 context added to the turn, never a veto.
 
@@ -118,7 +118,7 @@ Every string value is scrubbed by `gate_stat()` itself on the way in, through
 them, and a command can carry a token. Scrubbing lives in the writer rather
 than in each caller, because the one caller that forgets is the one that leaks,
 and the journal would quietly become the least protected copy of a secret on
-the machine. `governor/audit.py` and `watch/analyst.py` scrub a second time
+the machine. `core/governor/audit.py` and `tools/watch/analyst.py` scrub a second time
 over anything they paste into a review or hand to a judge. Still treat the
 journal as readable by whoever can read your state directory, and do not put a
 payload in it.
@@ -186,13 +186,13 @@ nobody runs, which is a code path that is already broken.
 ## 3. The module map
 
 ```
-                          hooks/_hook.py                hooks/_exec_guard.py
+                          core/gates/_hook.py                core/gates/_exec_guard.py
                 (gate_stat, read_stdin_json, mask_secrets,   (argv allowlist
                  STATE_DIR, GATE_STATS, transcript helpers)   per binary)
                                  |                            |     |
    +---------+---------+---------+---------+---------+--------+--+  |
    |         |         |         |         |         |           |  |
-hooks/   memory/   shield/   recall/  sentinel/ governor/   watch/  |
+core/gates/   memory/   shield/   recall/  sentinel/ governor/   watch/  |
 12 gates  1 gate   2 hooks   2 hooks   health    2 judges   indexer |
 2 stamps           registry   engine   checks    proposal   server  |
                    rubric    curation  ^         trial      analyst |
@@ -200,7 +200,7 @@ hooks/   memory/   shield/   recall/  sentinel/ governor/   watch/  |
                                        +--------- check: and probe -+
 ```
 
-`hooks/` holds the **only** two shared sockets: `_hook.py` (journal, state
+`core/gates/` holds the **only** two shared sockets: `_hook.py` (journal, state
 directory, stdin protocol) and `_exec_guard.py` (the rule for running a
 command line that came out of a CONFIG FILE, used by the sentinel's probe file
 and by recall's `check:` field). Both are stdlib-only, and both are private by
@@ -226,15 +226,15 @@ Who depends on whom, in full:
 
 | Module | Depends on | Nothing depends on it |
 |---|---|---|
-| `hooks/_hook.py` | stdlib only | (it is the socket) |
-| `hooks/_exec_guard.py` | stdlib only | (it is the second socket: `recall/`, `sentinel/`) |
-| `hooks/*-gate.py` | `_hook` | yes, each gate is a leaf |
-| `memory/memory-verdict-gate.py` | `_hook` | yes |
-| `shield/` | `_hook`, `shield/_registry.py` | yes |
-| `recall/` | `_hook`, `_exec_guard`, `recall/recall.py` (engine, reused by `curate.py` as its own validator) | yes |
-| `sentinel/` | `_hook`, `_exec_guard`; READS settings files and the journal | yes |
-| `governor/` | `_hook` via `governor/_state.py`; `governor/judges.py` | yes |
-| `watch/` | `_hook` via `watch/config.py`; READS transcripts and journals | yes |
+| `core/gates/_hook.py` | stdlib only | (it is the socket) |
+| `core/gates/_exec_guard.py` | stdlib only | (it is the second socket: `core/recall/`, `core/sentinel/`) |
+| `core/gates/*-gate.py` | `_hook` | yes, each gate is a leaf |
+| `core/memory/memory-verdict-gate.py` | `_hook` | yes |
+| `core/shield/` | `_hook`, `core/shield/_registry.py` | yes |
+| `core/recall/` | `_hook`, `_exec_guard`, `core/recall/recall.py` (engine, reused by `curate.py` as its own validator) | yes |
+| `core/sentinel/` | `_hook`, `_exec_guard`; READS settings files and the journal | yes |
+| `core/governor/` | `_hook` via `core/governor/_state.py`; `core/governor/judges.py` | yes |
+| `watch/` | `_hook` via `tools/watch/config.py`; READS transcripts and journals | yes |
 
 Two properties fall out of that shape.
 
@@ -248,7 +248,7 @@ that module was reading.
 retired, or rewritten with a blast radius of exactly one file plus its suite
 plus its line in a settings file.
 
-`recall/recall.py` is the one place where a module reuses another module's
+`core/recall/recall.py` is the one place where a module reuses another module's
 internals rather than a file: `curate.py` imports the engine so that the
 engine's own parser IS the validator for anything an LLM proposed. Validating
 with a second parser would let a catalog pass curation and fail at read time.
@@ -296,8 +296,8 @@ not a wrong verdict, it is an invisible bill.
 **3. Restricted input, and no hands.** The judge receives the artifact and the
 rubric, and nothing else: not the prompt, not the project, not who wrote it. It
 has no way to be helpful to the author, which is the point. Where the judge
-could act, the tools are removed outright: `governor/judges.py` and
-`watch/analyst.py` both pass
+could act, the tools are removed outright: `core/governor/judges.py` and
+`tools/watch/analyst.py` both pass
 `--disallowedTools Bash,Edit,Write,NotebookEdit,WebFetch,WebSearch,Agent,Task`.
 The artifact is framed as an OBJECT OF ANALYSIS, never as an instruction, so the
 worst case of a prompt injection inside a judged session is a lying verdict,
@@ -327,7 +327,7 @@ call and zero key. Set in production, each one replaces a judge with a constant,
 which is either a permanently blind reviewer or a permanently blocked pane.
 
 There is a fifth LLM call in the repository and it is deliberately NOT a judge:
-`recall/curate.py` hands the catalog and the auto-captured drafts to a headless
+`core/recall/curate.py` hands the catalog and the auto-captured drafts to a headless
 CLI and asks for a tidy-up. It purges `ANTHROPIC_*` and runs the model handless
 (`--tools ""`, `--strict-mcp-config`), but it does not use a neutral cwd,
 because it is not measuring anything and there is no answer sheet to read. What
@@ -347,16 +347,16 @@ within weeks, and governance nobody reads is theatre with a log file.
 ```
 an INCIDENT                     (never an idea: see CONTRIBUTING.md)
    -> a proposal, five bounded fields
-   -> governor/propose.py: two adversarial judges, independent, refusal default
+   -> core/governor/propose.py: two adversarial judges, independent, refusal default
         one rejected      -> archive/ + ledger line. Silence toward the human.
         a judge silent    -> pending-judge/. NEVER a default yes.
         two viable        -> a pitch of FIVE LINES to the human. One word: GO / no.
    -> GO: the gate runs in OBSERVATION for 7 days. It journals `observe`
           and BLOCKS NOTHING.
-   -> governor/trial.py compiles what it WOULD have blocked: real catches,
+   -> core/governor/trial.py compiles what it WOULD have blocked: real catches,
       up to five samples -> the human answers: arm / discard.
    -> ARMED: a line in a settings file, added by a human.
-   -> governor/audit.py, weekly, by exception: SILENT gates and NOISY gates.
+   -> core/governor/audit.py, weekly, by exception: SILENT gates and NOISY gates.
       A gate doing its job is never mentioned.
 ```
 
@@ -415,3 +415,28 @@ retroactively while its gate journals stay indexed, so hygiene stays provable
 without the conversation being readable. The panel binds `127.0.0.1` and there
 is no host variable, on purpose: a variable is a thing someone eventually sets
 to a wildcard "just to test from the laptop" and then leaves that way.
+
+---
+
+## Repository layout: core and host adapters
+
+```
+core/                    host-neutral: the exit-code contract, the journal, the checks
+  gates/                 gates + the shared helper (_hook.py, _exec_guard.py)
+  governor/ shield/ memory/ recall/ sentinel/
+adapters/claude-code/    everything that knows Claude Code: launcher, settings examples, units
+tools/                   optional panels: mission-control/, watch/
+docs/                    one page per module and per gate
+tests/                   one suite per module, zero network
+```
+
+The core speaks only the contract of section 1 (JSON on stdin, exit 0 or 2,
+stderr, journal). An adapter wires that contract into one host.
+
+Known limit, kept on purpose: the gates read the Claude Code payload field names
+(`tool_name`, `tool_input`, `Bash`, `Write`, `Edit`). They live in `core/gates/`
+because the sentinel, recall and the panels import `_hook.py` and `_exec_guard.py`
+from there, and splitting a shared helper from its first user would only add a
+copy. Hosts with another payload shape map their event into this one in their
+adapter. A second adapter (part 2 of this update) will show whether the payload
+reading needs its own seam.

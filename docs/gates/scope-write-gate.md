@@ -3,7 +3,7 @@
 PreToolUse gate on `Write|Edit|MultiEdit|NotebookEdit`. Exit 2 = block,
 fail-open everywhere, every execution logs one line to the gate-stats journal
 (`pass`, `block`, `skip-stamp`, `skip-disabled`, `skip-out-of-scope`,
-`skip-no-path`, `fail-open`). Its companion CLI `hooks/scope-stamp.py` posts
+`skip-no-path`, `fail-open`). Its companion CLI `core/gates/scope-stamp.py` posts
 the sanctioned bypass stamp and journals it as `observe`.
 
 ## What it blocks
@@ -63,7 +63,7 @@ outside the perimeter is exit 2, not a WARN one can talk past.
   opens ONE prefix for 30 minutes; the reason is mandatory and journaled:
 
   ```sh
-  python3 hooks/scope-stamp.py /allowed/path/prefix --reason "human GO: ..."
+  python3 core/gates/scope-stamp.py /allowed/path/prefix --reason "human GO: ..."
   ```
 
   Every pass-through is then journaled as `skip-stamp` with the target, the

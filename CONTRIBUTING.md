@@ -93,7 +93,7 @@ the incident report you were missing, or exactly the proof the idea was noise.
 
 ### 1. The skeleton
 
-One file, `hooks/<name>-gate.py`, standard library only. This is the full
+One file, `core/gates/<name>-gate.py`, standard library only. This is the full
 shape, and every existing gate follows it:
 
 ```python
@@ -202,7 +202,7 @@ Two naming rules that are easy to get wrong:
   its filename produces a false WARN forever.
 - **the kill-switch is `HARNESS_<NAME>_GATE_DISABLE`**, with `<NAME>` the file
   stem upper-cased and dashes turned into underscores:
-  `hooks/scope-write-gate.py` -> `HARNESS_SCOPE_WRITE_GATE_DISABLE`. It is
+  `core/gates/scope-write-gate.py` -> `HARNESS_SCOPE_WRITE_GATE_DISABLE`. It is
   checked FIRST, and it journals `skip-disabled` before returning 0. A kill
   switch that returns silently is a hole; one that journals is a deliberate,
   countable decision.
@@ -293,7 +293,7 @@ the pull request, unplug the gate by hand and check the suite goes red.
 The cheapest mutation is turning the refusal into an allow:
 
 ```sh
-# in hooks/<name>-gate.py, change the block path:
+# in core/gates/<name>-gate.py, change the block path:
 #     return 2      ->      return 0
 python3 -m pytest tests/test_<name>_gate.py -q
 ```
@@ -333,7 +333,7 @@ goes red).
 
 ### 6. Wire it, or do not
 
-Adding a gate to `launchers/settings.example.json` is a separate decision from
+Adding a gate to `adapters/claude-code/launchers/settings.example.json` is a separate decision from
 adding the gate. The examples are not an inventory of everything that exists;
 they are two opinionated starting points (`builder`, write-heavy;
 `researcher`, read-heavy). A new gate can perfectly well ship unwired, with its
@@ -410,8 +410,8 @@ an operator, and a grep.
 **No identity, no secret, no private path.** No personal name, no hostname, no
 IP, no `/home/<someone>`, no API key, not even in a comment or a test fixture.
 Example files are named `*.example.*` and everything in them is invented:
-`recall/CATALOG.example.md`, `shield/trigger-registry.example.yaml`,
-`governor/proposal.example.md`. Run the engine against them and they correctly
+`core/recall/CATALOG.example.md`, `core/shield/trigger-registry.example.yaml`,
+`core/governor/proposal.example.md`. Run the engine against them and they correctly
 report their own paths as missing, which is the behaviour to expect from an
 honest example.
 

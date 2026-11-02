@@ -54,7 +54,7 @@ the trigger registry, prints the matching rules into the turn's context
 The registry is data, not code: a YAML file of `pattern` / `rule` / `memory` /
 `active` entries, editable without touching a hook. `active: false` parks an
 entry instead of deleting it, so the reason it was written stays readable.
-`shield/trigger-registry.example.yaml` ships as a format example -- every rule
+`core/shield/trigger-registry.example.yaml` ships as a format example -- every rule
 in it is invented, and a trigger that does not come from a real incident is
 noise.
 
@@ -128,11 +128,11 @@ retry in a loop freezes the pane. Those turns pass and are journaled.
 
 | Path | Role |
 |---|---|
-| `shield/shield-inject.py` | layer 1, `UserPromptSubmit` |
-| `shield/shield-reviewer.py` | layer 3, `Stop` |
-| `shield/_registry.py` | shared registry loader (PyYAML optional) |
-| `shield/trigger-registry.example.yaml` | EXAMPLE trigger registry |
-| `shield/reviewer-rubric.example.md` | EXAMPLE standing invariants |
+| `core/shield/shield-inject.py` | layer 1, `UserPromptSubmit` |
+| `core/shield/shield-reviewer.py` | layer 3, `Stop` |
+| `core/shield/_registry.py` | shared registry loader (PyYAML optional) |
+| `core/shield/trigger-registry.example.yaml` | EXAMPLE trigger registry |
+| `core/shield/reviewer-rubric.example.md` | EXAMPLE standing invariants |
 | `tests/test_shield.py` | 17 cases, zero network |
 
 `_registry.py` uses PyYAML when it is installed and falls back to a built-in

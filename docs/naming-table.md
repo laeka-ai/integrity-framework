@@ -8,16 +8,16 @@ page as the contract.
 
 | Concept | Directory |
 |---|---|
-| Cross-cutting hook helper + gates | `hooks/` |
-| Shared guard for executing a config-file command line | `hooks/_exec_guard.py` |
-| Behavioral rule enforcement (3 layers) | `shield/` |
-| Statutory memory format + its gate | `memory/` |
-| "Already built" artifact catalog | `recall/` |
-| Daily self-discovering health checks | `sentinel/` |
-| Gate governance (adversarial judges) | `governor/` |
+| Cross-cutting hook helper + gates | `core/gates/` |
+| Shared guard for executing a config-file command line | `core/gates/_exec_guard.py` |
+| Behavioral rule enforcement (3 layers) | `core/shield/` |
+| Statutory memory format + its gate | `core/memory/` |
+| "Already built" artifact catalog | `core/recall/` |
+| Daily self-discovering health checks | `core/sentinel/` |
+| Gate governance (adversarial judges) | `core/governor/` |
 | Read-only observation panel | `watch/` |
-| Live fleet panel (roles, schedule, approvals) | `mission-control/` |
-| Agent launcher templates | `launchers/` |
+| Live fleet panel (roles, schedule, approvals) | `tools/mission-control/` |
+| Agent launcher templates | `adapters/claude-code/launchers/` |
 
 ## Environment variables
 
@@ -38,8 +38,8 @@ page as the contract.
 | `HARNESS_DESTRUCTIVE_COMMAND_EXTRA_PATTERNS` | Extra deny regexes, one per line | empty |
 | `HARNESS_SCOPE_WRITE_STAMP` | Path of the scope-bypass stamp file | `$HARNESS_STATE_DIR/scope-write.stamp` |
 | `HARNESS_INTERLOCK_SCRATCH_DIRS` | Colon-separated scratch dirs exempt from interlock | system temp + `/tmp` + `/var/tmp` |
-| `HARNESS_SHIELD_REGISTRY` | Shield trigger registry path | `shield/trigger-registry.example.yaml` |
-| `HARNESS_SHIELD_RUBRIC` | Shield standing-invariants file | `shield/reviewer-rubric.example.md` |
+| `HARNESS_SHIELD_REGISTRY` | Shield trigger registry path | `core/shield/trigger-registry.example.yaml` |
+| `HARNESS_SHIELD_RUBRIC` | Shield standing-invariants file | `core/shield/reviewer-rubric.example.md` |
 | `HARNESS_SHIELD_FRESHNESS` | Lifetime of the layer-1 marker, seconds | `2700` |
 | `HARNESS_SHIELD_TIMEOUT` | Hard timeout of the shield judge call, seconds | `12` |
 | `HARNESS_SHIELD_MODEL` | Model alias for the shield judge | `haiku` |

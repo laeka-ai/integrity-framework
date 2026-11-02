@@ -308,7 +308,7 @@ How to read it:
 
 - the three `coverage` lines are the point of the whole exercise: each wired
   gate left a trace, so each one is provably ALIVE, not merely present;
-- the nine `orphan` WARNs are correct and expected here. `hooks/` ships twelve
+- the nine `orphan` WARNs are correct and expected here. `core/gates/` ships twelve
   gates and you wired three; the other nine sit on disk, wired nowhere. A gate
   somebody believes is armed and is not, is exactly the expensive case;
 - the two `SKIP orphan` lines are the stamp tools, exempt by design (a human

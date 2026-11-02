@@ -5,7 +5,7 @@ frontmatter with a status taken from a closed list, a VERDICT block as the
 FIRST line of the body, and an index line that shows that status at the head
 of its summary.
 
-`memory/memory-verdict-gate.py` enforces the statute. PreToolUse gate on
+`core/memory/memory-verdict-gate.py` enforces the statute. PreToolUse gate on
 `Write|Edit`, exit 2 = block, fail-open, every decision journaled
 (`pass`, `block`, `skip-out-of-scope`, `skip-index`, `skip-unresolvable`,
 `skip-no-index`). The vocabulary is frozen in

@@ -47,7 +47,7 @@ that never share a working tree cannot overwrite each other's work.
 
 ## The launcher, step by step
 
-`launchers/launch-agent.example.sh` takes the role as an ARGUMENT, so one
+`adapters/claude-code/launchers/launch-agent.example.sh` takes the role as an ARGUMENT, so one
 template serves every pane:
 
 ```
@@ -102,7 +102,7 @@ What it does, in order:
 
 ## The vault
 
-`launchers/vault.example.sh` builds and inspects it; the launcher only reads
+`adapters/claude-code/launchers/vault.example.sh` builds and inspects it; the launcher only reads
 it.
 
 The model: **one age-encrypted env file, decrypted once at boot, values
@@ -145,7 +145,7 @@ business inheriting a deployment credential.
 
 ## Timers: the units, and the trap in every one of them
 
-`launchers/systemd/` ships three example user units and their timers:
+`adapters/claude-code/launchers/systemd/` ships three example user units and their timers:
 
 | Unit | Cadence | What it does |
 |---|---|---|
@@ -219,7 +219,7 @@ default is the narrow choice:
 
 Adding a role is three steps and no code:
 
-1. write `launchers/settings.<role>.example.json` (start from the closest
+1. write `adapters/claude-code/launchers/settings.<role>.example.json` (start from the closest
    shipped example);
 2. put the role's system prompt wherever you keep it, and point
    `HARNESS_ROLE_PROMPT` at it;
@@ -232,8 +232,8 @@ has no settings file is a hard error naming the file it looked for.
 
 | Path | Role |
 |---|---|
-| `launchers/launch-agent.example.sh` | the parameterized launcher template |
-| `launchers/vault.example.sh` | build, encrypt, inspect and verify the vault |
-| `launchers/settings.example.json` | EXAMPLE wiring, `builder` role |
-| `launchers/settings.researcher.example.json` | EXAMPLE wiring, `researcher` role |
-| `launchers/systemd/*.service`, `*.timer` | EXAMPLE user units, PATH declared |
+| `adapters/claude-code/launchers/launch-agent.example.sh` | the parameterized launcher template |
+| `adapters/claude-code/launchers/vault.example.sh` | build, encrypt, inspect and verify the vault |
+| `adapters/claude-code/launchers/settings.example.json` | EXAMPLE wiring, `builder` role |
+| `adapters/claude-code/launchers/settings.researcher.example.json` | EXAMPLE wiring, `researcher` role |
+| `adapters/claude-code/launchers/systemd/*.service`, `*.timer` | EXAMPLE user units, PATH declared |

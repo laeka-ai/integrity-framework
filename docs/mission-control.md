@@ -57,10 +57,10 @@ will eventually disagree with it.
 
 | Module | File | Contract |
 |---|---|---|
-| Pause the engine | `mission-control/halt.py` | `status()`, `request(role, token)`, `commit(body)` |
-| Record an approval | `mission-control/approve.py` | `record(script, sha256, token)` |
-| Hardware presence proof | `mission-control/presence.py` | `status()`, `begin(action, body)`, `complete(action, body)` |
-| Hand over a secret | `mission-control/deposit.py` | `status()`, `store(slot, value, token)` |
+| Pause the engine | `tools/mission-control/halt.py` | `status()`, `request(role, token)`, `commit(body)` |
+| Record an approval | `tools/mission-control/approve.py` | `record(script, sha256, token)` |
+| Hardware presence proof | `tools/mission-control/presence.py` | `status()`, `begin(action, body)`, `complete(action, body)` |
+| Hand over a secret | `tools/mission-control/deposit.py` | `status()`, `store(slot, value, token)` |
 
 An operator who installs none of them has a panel that is physically unable to
 act. That is the intended default, and it is why the panel is safe to leave
@@ -203,8 +203,8 @@ by an agent must not be able to become script execution.
 ## Running it
 
 ```sh
-python3 mission-control/ingest.py          # one pass, prints what it inserted
-python3 mission-control/server.py          # http://127.0.0.1:8787
+python3 tools/mission-control/ingest.py          # one pass, prints what it inserted
+python3 tools/mission-control/server.py          # http://127.0.0.1:8787
 ```
 
 The server runs an ingest pass itself when a view is opened, throttled to once
@@ -231,9 +231,9 @@ Each module also runs standalone and prints JSON, which is the fastest way to
 find out why a view is empty:
 
 ```sh
-python3 mission-control/fleet.py           # the roster and why each pane resolved
-python3 mission-control/approvals.py       # the queue, after path confinement
-python3 mission-control/store.py           # self-check: dedup, triggers, signatures
+python3 tools/mission-control/fleet.py           # the roster and why each pane resolved
+python3 tools/mission-control/approvals.py       # the queue, after path confinement
+python3 tools/mission-control/store.py           # self-check: dedup, triggers, signatures
 ```
 
 ## Environment

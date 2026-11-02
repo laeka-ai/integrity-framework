@@ -175,11 +175,11 @@ standard library: the harness installs nothing in order to govern itself.
 
 | Path | Role |
 |---|---|
-| `governor/judges.py` | the two adversarial judges (local CLI + HTTP adapter) |
-| `governor/propose.py` | the conveyor: parse, judge, route, journal |
-| `governor/audit.py` | weekly audit of the live gates, by exception |
-| `governor/trial.py` | open an observation trial, close the due ones |
-| `governor/proposal.example.md` | the proposal format, entirely invented |
+| `core/governor/judges.py` | the two adversarial judges (local CLI + HTTP adapter) |
+| `core/governor/propose.py` | the conveyor: parse, judge, route, journal |
+| `core/governor/audit.py` | weekly audit of the live gates, by exception |
+| `core/governor/trial.py` | open an observation trial, close the due ones |
+| `core/governor/proposal.example.md` | the proposal format, entirely invented |
 
 State, under `$HARNESS_STATE_DIR/governor/`:
 

@@ -4,7 +4,7 @@ PreToolUse gate on `Write|Edit|MultiEdit`. Exit 2 = block, fail-open on hook
 errors, every execution logs one line to the gate-stats journal (`pass`,
 `block`, `skip-recent-step`, `skip-doc`, `skip-scratch-path`,
 `skip-replace-all`, `skip-out-of-scope`, `skip-no-path`, `fail-open`). Its
-companion CLI `hooks/interlock-stamp.py` posts the proof of the preparation
+companion CLI `core/gates/interlock-stamp.py` posts the proof of the preparation
 step and journals it as `observe`.
 
 This is a lock with two doors, plus the stamper that opens them. There is
@@ -86,14 +86,14 @@ door.
   carrying `step`, `action`, `pass_fail_criteria`, `evidence_expected`:
 
   ```sh
-  python3 hooks/interlock-stamp.py --session <session-id> --decomp steps.json
+  python3 core/gates/interlock-stamp.py --session <session-id> --decomp steps.json
   ```
 
 - **Door 2 -- ack the mission.** The inventory of the files you will touch
   plus the risks, at least 5 non-empty lines:
 
   ```sh
-  python3 hooks/interlock-stamp.py --session <session-id> --ack ack.md
+  python3 core/gates/interlock-stamp.py --session <session-id> --ack ack.md
   ```
 
 Both doors open the same lock for 60 minutes, then the work re-anchors. The
