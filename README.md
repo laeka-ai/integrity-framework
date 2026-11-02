@@ -55,7 +55,7 @@ hooks directory is a legitimate way to use this.
 
 | Module | What it does |
 |:--|:--|
-| **`adapters/claude-code/hooks/`** | **12 gates** on what the agent runs and writes, plus the shared helper and two stamp CLIs. The memory-verdict gate (statutory memory) is one of them. Each one exists because something went wrong once. |
+| **`adapters/claude-code/hooks/`** | **15 gates** on what the agent runs and writes, plus the shared helper and two stamp CLIs. The memory-verdict gate (statutory memory) is one of them. Each one exists because something went wrong once. |
 | **`core/shield/`** | Behavioral rules in **three layers**: injected at the moment of risk, standing format invariants, and a reviewer that judges the outgoing message before it is displayed. |
 | **Statutory memory** (`docs/statutory-memory.md`) | **Statutory memory**: a verdict on top, a closed status vocabulary, and an index that carries the state of what it points at. |
 | **`core/recall/`** | A catalog that answers **"we already built this"** before an agent rebuilds it, with an executable liveness check per entry. |
@@ -65,7 +65,7 @@ hooks directory is a legitimate way to use this.
 | **`tools/mission-control/`** | A read-only local panel over the **present**: which roles are alive, what is scheduled, and what is waiting on a human. |
 | **`adapters/claude-code/launchers/`** | Wiring templates: example settings per role, a vault pattern, and systemd units that carry the PATH trap's fix. |
 
-### The thirteen gates, and the day each one was earned
+### The fifteen gates, and the day each one was earned
 
 - a shell command prefixed with `HOME=` returned a **silently false result**
   that got reported as fact
@@ -75,6 +75,10 @@ hooks directory is a legitimate way to use this.
   config is read at boot, and a vanished hook blocks every prompt after
 - an LLM judge that could see the answer it was grading returned a **flawless
   verdict** on work that was wrong, and cost real money to produce
+- `set -e` at the head of a command **stops nothing** in the agent's shell tool,
+  so a chain went on after a failed `git checkout` believing it was protected
+- `pgrep -f PATTERN` **finds its own shell** (the pattern is in that shell's
+  command line), so a wait loop never ended
 - an index line said a name had been relaunched; the real decision, buried in a
   note body, was that the name was taken. **The index won**, and work restarted
   down a dead path
