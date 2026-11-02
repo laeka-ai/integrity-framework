@@ -22,7 +22,7 @@ import re
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                os.pardir, "hooks"))
+                                os.pardir, "gates"))
 from _hook import gate_stat
 
 STATUSES = {"active", "discarded", "stale", "superseded", "dormant"}

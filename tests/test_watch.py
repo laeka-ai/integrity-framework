@@ -29,7 +29,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-WATCH = ROOT / "watch"
+WATCH = ROOT / "tools" / "watch"
 INDEXER_CLI = WATCH / "indexer.py"
 ANALYST_CLI = WATCH / "analyst.py"
 

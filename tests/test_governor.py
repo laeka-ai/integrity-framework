@@ -24,7 +24,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-GOVERNOR = ROOT / "governor"
+GOVERNOR = ROOT / "core" / "governor"
 PROPOSE = GOVERNOR / "propose.py"
 AUDIT = GOVERNOR / "audit.py"
 TRIAL = GOVERNOR / "trial.py"

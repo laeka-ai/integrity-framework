@@ -58,7 +58,7 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, os.pardir, "hooks"))
+sys.path.insert(0, os.path.join(HERE, os.pardir, "gates"))
 from _hook import STATE_DIR  # noqa: E402
 # The guard of the `check:` field, shared with the sentinel's probe file: one
 # rule, one implementation. Imported plainly, like _hook above -- without it

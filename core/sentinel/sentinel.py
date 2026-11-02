@@ -73,7 +73,7 @@ from datetime import datetime
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-sys.path.insert(0, os.path.join(ROOT, "hooks"))
+sys.path.insert(0, os.path.join(ROOT, "gates"))
 try:
     from _hook import GATE_STATS, STATE_DIR, gate_stat
 except Exception:  # MANDATORY fallback: mirrors the helper's own defaults.
@@ -413,7 +413,7 @@ def hook_dirs(cli_dirs):
     hooks directory plus the agent's own ~/.claude/hooks."""
     raw = list(cli_dirs or []) or env_list("HARNESS_HOOK_DIRS")
     if not raw:
-        raw = [os.path.join(ROOT, "hooks"), os.path.expanduser("~/.claude/hooks")]
+        raw = [os.path.join(ROOT, "gates"), os.path.expanduser("~/.claude/hooks")]
     return sorted({os.path.normpath(os.path.expanduser(p)) for p in raw if p})
 
 

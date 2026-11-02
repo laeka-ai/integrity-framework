@@ -17,7 +17,7 @@ import unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-HOOK = HERE.parent / "hooks" / "settings-go-gate.py"
+HOOK = HERE.parent / "core" / "gates" / "settings-go-gate.py"
 
 
 def run_hook(stdin_text: str, env_extra: dict) -> subprocess.CompletedProcess:

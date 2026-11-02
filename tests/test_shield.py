@@ -24,10 +24,10 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-SHIELD = ROOT / "shield"
+SHIELD = ROOT / "core" / "shield"
 INJECT = SHIELD / "shield-inject.py"
 REVIEWER = SHIELD / "shield-reviewer.py"
-LAUNCHERS = ROOT / "launchers"
+LAUNCHERS = ROOT / "adapters" / "claude-code" / "launchers"
 
 
 def run_hook(script: Path, args, payload, env_extra, raw_stdin=None):

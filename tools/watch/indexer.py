@@ -32,7 +32,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-sys.path.insert(0, os.path.join(HERE, os.pardir, "hooks"))
+sys.path.insert(0, os.path.join(HERE, os.pardir, os.pardir, "core", "gates"))
 import config as C                      # noqa: E402
 
 try:

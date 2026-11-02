@@ -16,7 +16,7 @@ import unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-HELPER = HERE.parent / "hooks" / "_hook.py"
+HELPER = HERE.parent / "core" / "gates" / "_hook.py"
 
 
 def helper(journal: Path):

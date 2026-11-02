@@ -40,7 +40,7 @@ WorkingDirectory=%h/agent-controls
 # ACTUALLY load. The launcher renders one per role into the state directory
 # ($HARNESS_STATE_DIR/settings.<role>.json), so add the roles you run.
 # --quiet writes the daily report without printing it into the journal.
-ExecStart=/usr/bin/python3 %h/agent-controls/sentinel/sentinel.py \
+ExecStart=/usr/bin/python3 %h/agent-controls/core/sentinel/sentinel.py \
     --settings %h/.harness/settings.builder.json \
     --quiet
 

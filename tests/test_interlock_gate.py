@@ -28,9 +28,9 @@ import unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-HOOK = HERE.parent / "hooks" / "interlock-gate.py"
-STAMP_CLI = HERE.parent / "hooks" / "interlock-stamp.py"
-EXAMPLE_SETTINGS = HERE.parent / "launchers" / "settings.example.json"
+HOOK = HERE.parent / "core" / "gates" / "interlock-gate.py"
+STAMP_CLI = HERE.parent / "core" / "gates" / "interlock-stamp.py"
+EXAMPLE_SETTINGS = HERE.parent / "adapters" / "claude-code" / "launchers" / "settings.example.json"
 
 LEAKY_ENV = ("HARNESS_STATE_DIR", "HARNESS_GATE_STATS",
              "HARNESS_INTERLOCK_SCRATCH_DIRS")
@@ -237,7 +237,7 @@ class TestInterlockGate(unittest.TestCase):
 
     # -- I7: the gate is actually WIRED ----------------------------------
     @unittest.skipUnless(EXAMPLE_SETTINGS.is_file(),
-                         "launchers/settings.example.json not shipped yet")
+                         "adapters/claude-code/launchers/settings.example.json not shipped yet")
     def test_i7_wired_in_the_example_settings(self):
         """A gate nobody wires is a gate that lies. The shipped example must
         call it on Write|Edit|MultiEdit."""

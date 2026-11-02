@@ -13,7 +13,7 @@ import unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-HOOK = HERE.parent / "hooks" / "destructive-dry-run-gate.py"
+HOOK = HERE.parent / "core" / "gates" / "destructive-dry-run-gate.py"
 
 GUARDED_HEADER = (
     "#!/usr/bin/env bash\n"

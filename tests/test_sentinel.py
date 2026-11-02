@@ -29,7 +29,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-SENTINEL = ROOT / "sentinel" / "sentinel.py"
+SENTINEL = ROOT / "core" / "sentinel" / "sentinel.py"
 
 VALID_HOOK = "#!/usr/bin/env python3\nimport sys\nsys.exit(0)\n"
 BROKEN_HOOK = "#!/usr/bin/env python3\ndef broken(:\n    pass\n"
@@ -427,7 +427,7 @@ class TestProbeExecution(SentinelBase):
         can no longer land on one side only."""
         mod = sentinel_module()
         spec = importlib.util.spec_from_file_location(
-            "recall_for_parity", str(ROOT / "recall" / "recall.py"))
+            "recall_for_parity", str(ROOT / "core" / "recall" / "recall.py"))
         recall_mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(recall_mod)
         self.assertIs(mod.binary_refusal, recall_mod.binary_refusal)

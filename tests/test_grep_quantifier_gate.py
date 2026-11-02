@@ -13,7 +13,7 @@ import unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-HOOK = HERE.parent / "hooks" / "grep-quantifier-gate.py"
+HOOK = HERE.parent / "core" / "gates" / "grep-quantifier-gate.py"
 
 KILLER = ".{0,20}X.{0,20}"          # the measured 2 GB pattern (ERE form)
 KILLER_BRE = r".\{0,20\}X.\{0,20\}"  # same pattern, escaped BRE form

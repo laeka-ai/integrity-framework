@@ -1,7 +1,7 @@
 # EXAMPLE user unit -- NOT shipped armed. Copy it to
 # ~/.config/systemd/user/, adjust the paths, then:
 #
-#   chmod +x ~/agent-controls/recall/recall-refresh.sh
+#   chmod +x ~/agent-controls/core/recall/recall-refresh.sh
 #   systemctl --user daemon-reload
 #   systemctl --user enable --now harness-recall-refresh.timer
 #
@@ -35,4 +35,4 @@ Environment=HARNESS_STATE_DIR=%h/.harness
 Nice=10
 IOSchedulingClass=idle
 
-ExecStart=%h/agent-controls/recall/recall-refresh.sh
+ExecStart=%h/agent-controls/core/recall/recall-refresh.sh

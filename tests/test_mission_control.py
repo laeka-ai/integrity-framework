@@ -42,7 +42,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-MC = ROOT / "mission-control"
+MC = ROOT / "tools" / "mission-control"
 
 # The published source files, named one by one on purpose: a test that globs
 # `*.py` would also read whatever a previous test deposited in that directory.
@@ -1304,18 +1304,20 @@ class TestOptionalModules(ServedPanel):
         for it. Returns the path of the copied server."""
         root = Path(self.tmp.name) / "checkout"
         root.mkdir()
-        shutil.copytree(MC, root / "mission-control",
+        (root / "tools").mkdir()
+        (root / "core").mkdir()
+        shutil.copytree(MC, root / "tools" / "mission-control",
                         ignore=shutil.ignore_patterns("__pycache__", "*.pyc",
                                                       "*.db"))
-        os.symlink(ROOT / "hooks", root / "hooks")
+        os.symlink(ROOT / "core" / "gates", root / "core" / "gates")
         wanted = dict(stubs)
         for name in self.server.OPTIONAL_MODULES:
-            path = root / "mission-control" / (name + ".py")
+            path = root / "tools" / "mission-control" / (name + ".py")
             if name in wanted:
                 path.write_text(wanted[name], encoding="utf-8")
             elif path.exists():
                 path.unlink()
-        return root / "mission-control" / "server.py"
+        return root / "tools" / "mission-control" / "server.py"
 
     def launch(self, cli):
         """Start the copied panel, read its two banner lines, wait for it to

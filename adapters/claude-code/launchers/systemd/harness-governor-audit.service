@@ -38,8 +38,8 @@ WorkingDirectory=%h/agent-controls
 
 # The audit is deterministic: it reads the gate-stats journal and writes a
 # decision page ONLY when a decision is pending.
-ExecStart=/usr/bin/python3 %h/agent-controls/governor/audit.py
+ExecStart=/usr/bin/python3 %h/agent-controls/core/governor/audit.py
 
 # Then close the observation trials whose window has ended. ExecStartPost runs
 # after the audit and its own failure does not mask the audit's result.
-ExecStartPost=/usr/bin/python3 %h/agent-controls/governor/trial.py
+ExecStartPost=/usr/bin/python3 %h/agent-controls/core/governor/trial.py

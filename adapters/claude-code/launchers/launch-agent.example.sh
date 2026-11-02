@@ -27,7 +27,7 @@ Roles shipped as examples:
   builder     write-heavy: the full mutation gate battery
   researcher  read-heavy: a write perimeter + a response ceiling
 
-Role <r> loads launchers/settings.<r>.example.json, with one deliberate
+Role <r> loads adapters/claude-code/launchers/settings.<r>.example.json, with one deliberate
 exception: "builder" loads settings.example.json, the canonical file the
 test suites check.
 
@@ -41,7 +41,7 @@ Environment (all optional, all with a default):
   HARNESS_VAULT             encrypted env file (default: ~/.harness-secrets.env.age)
   HARNESS_VAULT_IDENTITY    age identity file (default: ~/.config/age/identity.txt)
   HARNESS_VAULT_IDENTITY_CMD  command PRINTING an identity, for a hardware-backed
-                              key (see launchers/vault.example.sh)
+                              key (see adapters/claude-code/launchers/vault.example.sh)
   HARNESS_VAULT_KEYS        colon-separated allowlist of names to export
   HARNESS_ROLE_PROMPT       file holding this role's system prompt
   HARNESS_BOOT_PROMPT       first prompt handed to the agent at boot
@@ -68,7 +68,7 @@ fi
 # The agent CLI usually lives in a per-user bin directory. Prepend it HERE
 # rather than assuming the caller already has it: the same omission inside a
 # systemd unit is what silently killed three scheduled runs, which is why
-# every example unit in launchers/systemd/ carries an explicit PATH.
+# every example unit in adapters/claude-code/launchers/systemd/ carries an explicit PATH.
 export PATH="$HOME/.local/bin:$PATH"
 
 # ---------------------------------------------------------------------------
@@ -103,7 +103,7 @@ export HARNESS_WRITE_SCOPE="${HARNESS_WRITE_SCOPE:-$workspace}"
 #    out loud: a launcher that dies on an absent optional file is a launcher
 #    nobody can debug at 6 in the morning.
 #
-#    See launchers/vault.example.sh for how the file is produced.
+#    See adapters/claude-code/launchers/vault.example.sh for how the file is produced.
 # ---------------------------------------------------------------------------
 vault_file="${HARNESS_VAULT:-$HOME/.harness-secrets.env.age}"
 vault_identity="${HARNESS_VAULT_IDENTITY:-$HOME/.config/age/identity.txt}"
@@ -164,8 +164,8 @@ fi
 #    Point HARNESS_SETTINGS at your own file to skip all of this.
 # ---------------------------------------------------------------------------
 case "$role" in
-  builder) settings_src="$HARNESS_HOME/launchers/settings.example.json" ;;
-  *)       settings_src="$HARNESS_HOME/launchers/settings.$role.example.json" ;;
+  builder) settings_src="$HARNESS_HOME/adapters/claude-code/adapters/claude-code/launchers/settings.example.json" ;;
+  *)       settings_src="$HARNESS_HOME/adapters/claude-code/adapters/claude-code/launchers/settings.$role.example.json" ;;
 esac
 
 if [[ -n "${HARNESS_SETTINGS:-}" ]]; then
@@ -177,7 +177,7 @@ elif [[ -r "$settings_src" ]]; then
 else
   echo "launch-agent: no settings for role '$role' (looked for $settings_src)" >&2
   echo "launch-agent: available examples:" >&2
-  ls -1 "$HARNESS_HOME"/launchers/settings*.example.json >&2 || true
+  ls -1 "$HARNESS_HOME"/adapters/claude-code/adapters/claude-code/launchers/settings*.example.json >&2 || true
   exit 1
 fi
 

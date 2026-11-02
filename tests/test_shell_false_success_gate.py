@@ -27,7 +27,7 @@ import unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-HOOK = HERE.parent / "hooks" / "shell-false-success-gate.py"
+HOOK = HERE.parent / "core" / "gates" / "shell-false-success-gate.py"
 
 HEADER = "#!/bin/bash\nset -euo pipefail\n"
 

@@ -33,7 +33,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-RECALL = ROOT / "recall"
+RECALL = ROOT / "core" / "recall"
 ENGINE = RECALL / "recall.py"
 CURATE = RECALL / "curate.py"
 INJECT = RECALL / "recall-inject.py"

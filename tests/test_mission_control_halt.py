@@ -27,7 +27,7 @@ import urllib.error
 import urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PANEL = os.path.join(os.path.dirname(HERE), "mission-control")
+PANEL = os.path.join(os.path.dirname(HERE), "tools", "mission-control")
 HALT_PY = os.path.join(PANEL, "halt.py")
 
 
