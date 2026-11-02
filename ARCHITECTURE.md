@@ -200,7 +200,7 @@ adapters/claude-code/hooks/   memory    shield/   recall/  sentinel/ governor/  
                                        +--------- check: and probe -+
 ```
 
-`adapters/claude-code/hooks/` holds the **only** two shared sockets: `_hook.py` (journal, state
+`core/common/` holds the **only** two shared sockets: `_hook.py` (journal, state
 directory, stdin protocol) and `_exec_guard.py` (the rule for running a
 command line that came out of a CONFIG FILE, used by the sentinel's probe file
 and by recall's `check:` field). Both are stdlib-only, and both are private by
