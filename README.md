@@ -55,9 +55,9 @@ hooks directory is a legitimate way to use this.
 
 | Module | What it does |
 |:--|:--|
-| **`adapters/claude-code/hooks/`** | **12 gates** on what the agent runs and writes, plus the shared helper and two stamp CLIs. The thirteenth gate ships with `core/memory/`. Each one exists because something went wrong once. |
+| **`adapters/claude-code/hooks/`** | **12 gates** on what the agent runs and writes, plus the shared helper and two stamp CLIs. The memory-verdict gate (statutory memory) is one of them. Each one exists because something went wrong once. |
 | **`core/shield/`** | Behavioral rules in **three layers**: injected at the moment of risk, standing format invariants, and a reviewer that judges the outgoing message before it is displayed. |
-| **`core/memory/`** | **Statutory memory**: a verdict on top, a closed status vocabulary, and an index that carries the state of what it points at. |
+| **Statutory memory** (`docs/statutory-memory.md`) | **Statutory memory**: a verdict on top, a closed status vocabulary, and an index that carries the state of what it points at. |
 | **`core/recall/`** | A catalog that answers **"we already built this"** before an agent rebuilds it, with an executable liveness check per entry. |
 | **`core/sentinel/`** | Daily health checks that **discover** what they audit by reading your wiring. Its central check finds gates that are wired but silent. |
 | **`core/governor/`** | New rules face **two adversarial judges**, then a seven-day observation trial, before anything gets armed. |

@@ -11,11 +11,11 @@ page as the contract.
 | Cross-cutting hook helper + gates | `adapters/claude-code/hooks/` |
 | Shared guard for executing a config-file command line | `core/common/_exec_guard.py` |
 | Behavioral rule enforcement (3 layers) | `core/shield/` |
-| Statutory memory format + its gate | `core/memory/` |
+| Statutory memory format + its gate | `docs/statutory-memory.md` + `adapters/claude-code/hooks/memory-verdict-gate.py` |
 | "Already built" artifact catalog | `core/recall/` |
 | Daily self-discovering health checks | `core/sentinel/` |
 | Gate governance (adversarial judges) | `core/governor/` |
-| Read-only observation panel | `watch/` |
+| Read-only observation panel | `tools/watch/` |
 | Live fleet panel (roles, schedule, approvals) | `tools/mission-control/` |
 | Agent launcher templates | `adapters/claude-code/launchers/` |
 

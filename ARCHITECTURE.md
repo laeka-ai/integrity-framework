@@ -192,7 +192,7 @@ nobody runs, which is a code path that is already broken.
                                  |                            |     |
    +---------+---------+---------+---------+---------+--------+--+  |
    |         |         |         |         |         |           |  |
-adapters/claude-code/hooks/   memory/   shield/   recall/  sentinel/ governor/   watch/  |
+adapters/claude-code/hooks/   memory    shield/   recall/  sentinel/ governor/   tools/watch/ |
 12 gates  1 gate   2 hooks   2 hooks   health    2 judges   indexer |
 2 stamps           registry   engine   checks    proposal   server  |
                    rubric    curation  ^         trial      analyst |
