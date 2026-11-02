@@ -47,7 +47,7 @@ cd /tmp/agent-controls-quickstart/agent-controls
 ............................................................................................................... [ 70%]
 .................................................. [ 86%]
 ...........................................             [100%]
-359 passed, 179 subtests passed in 39.26s
+361 passed, 179 subtests passed in 42.46s
 ```
 
 The suites themselves make zero network call and use no API key: every LLM judge
@@ -279,6 +279,9 @@ python3 $HARNESS_HOME/core/sentinel/sentinel.py --settings .claude/settings.json
 echo "exit=$?"
 ```
 
+Example output (dates, the orphan list and the counts depend on your hooks
+directory and your journal; yours will differ):
+
 ```
 # sentinel -- 2026-08-05 14:59 -- 0.0 s
 OK   settings  settings.json - 3 hooks wired
@@ -308,10 +311,10 @@ How to read it:
 
 - the three `coverage` lines are the point of the whole exercise: each wired
   gate left a trace, so each one is provably ALIVE, not merely present;
-- the nine `orphan` WARNs are correct and expected here. `adapters/claude-code/hooks/` ships twelve
-  gates and you wired three; the other nine sit on disk, wired nowhere. A gate
+- the `orphan` WARNs are correct and expected here. `adapters/claude-code/hooks/` ships twelve
+  gates plus helpers and you wired three; every other script sits on disk, wired nowhere. A gate
   somebody believes is armed and is not, is exactly the expensive case;
-- the two `SKIP orphan` lines are the stamp tools, exempt by design (a human
+- the `SKIP orphan` lines are the stamp tools, exempt by design (a human
   runs them by hand). Exemptions are printed rather than hidden, so an exemption
   cannot become a blind spot;
 - **exit is 0 whatever the verdict.** A monitor that kills its own timer unit
@@ -324,6 +327,8 @@ own run:
 ls $HARNESS_STATE_DIR/sentinel/
 tail -1 $HARNESS_STATE_DIR/gate-stats.jsonl
 ```
+
+Example output:
 
 ```
 2026-08-05.txt
