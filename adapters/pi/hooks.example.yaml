@@ -1,0 +1,22 @@
+# Example pi-yaml-hooks configuration. Copy it, then replace /opt/pi-guard with the
+# directory where you copied adapters/pi (see docs/install-pi.md).
+# pi-yaml-hooks dispatches tool.before.<tool> per tool, there is no wildcard.
+# Every hook runs under `python3 -I`: isolated mode ignores PYTHON* variables and
+# the current directory, so the agent cannot plant a module the guard would import.
+hooks:
+  - id: bash-boundary
+    event: tool.before.bash
+    actions:
+      - bash: /usr/bin/python3 -I /opt/pi-guard/hooks/bash-boundary.py
+  - id: install-guard
+    event: tool.before.bash
+    actions:
+      - bash: /usr/bin/python3 -I /opt/pi-guard/hooks/install-guard.py
+  - id: write-guard-write
+    event: tool.before.write
+    actions:
+      - bash: /usr/bin/python3 -I /opt/pi-guard/hooks/write-guard.py
+  - id: write-guard-edit
+    event: tool.before.edit
+    actions:
+      - bash: /usr/bin/python3 -I /opt/pi-guard/hooks/write-guard.py

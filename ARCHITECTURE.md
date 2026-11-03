@@ -440,5 +440,29 @@ entry point lives in `adapters/claude-code/hooks/` (the transcript reader is
 `_transcript.py` there). What the sentinel, recall, the governor and the panels import,
 `core/common/_hook.py` (state directory, journal, secret masking) and
 `core/common/_exec_guard.py`, has no host field in it and stays in core. Hosts with
-another payload shape map their event into this one in their adapter. A second adapter
-(part 2 of this update) will show whether the payload reading needs its own seam.
+another payload shape map their event into this one in their adapter. 
+
+## Pi adapter: one gate, two hosts
+
+`adapters/pi/` wires the same contract into Pi through pi-yaml-hooks. Choice made, and
+why: **the destructive-command rules stay in ONE place**. Pi's bash hook
+(`adapters/pi/hooks/bash-boundary.py`) maps the Pi payload (`tool_args.command`) into the
+Claude Code one and pipes it to `adapters/claude-code/hooks/destructive-command-gate.py`,
+unmodified; its exit code and stderr come back untouched. The shared gate reads the Claude
+Code field names, so it stays under `adapters/claude-code/hooks/`; this is the seam the
+note above asked about, and the answer is a translating wrapper, not a payload abstraction
+in core.
+
+What does not share, and lives only in `adapters/pi/`, because it is Pi-specific or has no
+counterpart on the other host:
+
+- the harder mode of an unattended agent (host-side authorizations bound to a command hash,
+  closed environment, normalisation, gate-hash check): `docs/gates/pi-bash-boundary.md`;
+- the write guard on the resolved path and the install guard with the OpenSSF base:
+  `docs/gates/pi-write-guard.md`, `docs/gates/pi-install-guard.md`;
+- the fail-closed patch of pi-yaml-hooks, which exists because that host lets a call through
+  when a hook fails (the opposite of invariant 2.1, deliberately): `docs/gates/pi-fail-closed.md`;
+- `hooks.example.yaml` and the tool-call helper (`extension/tool-call.mjs`).
+
+The Pi tree it was ported from kept its own copy of the destructive gate; two copies drift,
+which is why this version has none. Install: `docs/install-pi.md`.
