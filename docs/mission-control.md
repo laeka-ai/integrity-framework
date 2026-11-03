@@ -219,7 +219,7 @@ As a user unit:
 Description=mission-control fleet panel (loopback only)
 
 [Service]
-ExecStart=/usr/bin/python3 %h/agent-controls/tools/mission-control/server.py
+ExecStart=/usr/bin/python3 %h/integrity-framework/tools/mission-control/server.py
 Restart=on-failure
 Environment=HARNESS_STATE_DIR=%h/.harness
 

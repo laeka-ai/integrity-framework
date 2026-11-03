@@ -1,7 +1,7 @@
 # Quickstart -- 15 minutes, from clone to a gate that bites
 
 Everything below was run end to end before it was written down, in a throwaway
-tree at `/tmp/agent-controls-quickstart`. Every output on this page is the real
+tree at `/tmp/integrity-framework-quickstart`. Every output on this page is the real
 output of the command above it. Paste the commands as they are and you should
 see the same thing, modulo timestamps and paths.
 
@@ -21,8 +21,8 @@ only present.
 Nothing in this repository is armed by cloning it. A checkout is inert.
 
 ```sh
-mkdir -p /tmp/agent-controls-quickstart && cd /tmp/agent-controls-quickstart
-git clone https://github.com/EmergentSpirit/agent-controls.git
+mkdir -p /tmp/integrity-framework-quickstart && cd /tmp/integrity-framework-quickstart
+git clone https://github.com/laeka-ai/integrity-framework.git
 python3 -V
 ```
 
@@ -36,7 +36,7 @@ product's argument: a module without its suite does not ship here.
 ```sh
 python3 -m venv .venv
 .venv/bin/pip install pytest
-cd /tmp/agent-controls-quickstart/agent-controls
+cd /tmp/integrity-framework-quickstart/integrity-framework
 ../.venv/bin/python -m pytest tests/ -q
 ```
 
@@ -47,7 +47,7 @@ cd /tmp/agent-controls-quickstart/agent-controls
 ............................................................................................................... [ 70%]
 .................................................. [ 86%]
 ...........................................             [100%]
-369 passed, 179 subtests passed in 42.86s
+396 passed, 179 subtests passed in 41.52s
 ```
 
 The suites themselves make zero network call and use no API key: every LLM judge
@@ -61,23 +61,23 @@ only third-party package involved anywhere.
 Four variables. They are the whole configuration surface for this walkthrough.
 
 ```sh
-cd /tmp/agent-controls-quickstart
+cd /tmp/integrity-framework-quickstart
 mkdir -p demo/.claude state
 
-export HARNESS_HOME=/tmp/agent-controls-quickstart/agent-controls  # the checkout
-export HARNESS_STATE_DIR=/tmp/agent-controls-quickstart/state      # where state lives
+export HARNESS_HOME=/tmp/integrity-framework-quickstart/integrity-framework  # the checkout
+export HARNESS_STATE_DIR=/tmp/integrity-framework-quickstart/state      # where state lives
 export HARNESS_HOOK_DIRS=$HARNESS_HOME/adapters/claude-code/hooks                       # dirs holding live hooks
-export HARNESS_WRITE_SCOPE=/tmp/agent-controls-quickstart/demo     # this agent's perimeter
+export HARNESS_WRITE_SCOPE=/tmp/integrity-framework-quickstart/demo     # this agent's perimeter
 
-cd /tmp/agent-controls-quickstart/demo
+cd /tmp/integrity-framework-quickstart/demo
 printf '%s\n' "$HARNESS_HOME" "$HARNESS_STATE_DIR" "$HARNESS_HOOK_DIRS" "$HARNESS_WRITE_SCOPE"
 ```
 
 ```
-/tmp/agent-controls-quickstart/agent-controls
-/tmp/agent-controls-quickstart/state
-/tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks
-/tmp/agent-controls-quickstart/demo
+/tmp/integrity-framework-quickstart/integrity-framework
+/tmp/integrity-framework-quickstart/state
+/tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks
+/tmp/integrity-framework-quickstart/demo
 ```
 
 `HARNESS_STATE_DIR` matters more than it looks. **State never lives in the
@@ -128,9 +128,9 @@ python3 $HARNESS_HOME/core/sentinel/sentinel.py --settings .claude/settings.json
 ```
 
 ```
-hook  PreToolUse         script     /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks/home-prefix-gate.py
-hook  PreToolUse         script     /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks/destructive-command-gate.py
-hook  PreToolUse         script     /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks/scope-write-gate.py
+hook  PreToolUse         script     /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks/home-prefix-gate.py
+hook  PreToolUse         script     /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks/destructive-command-gate.py
+hook  PreToolUse         script     /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks/scope-write-gate.py
 total: 3 hooks wired across 1 settings file(s)
 ```
 
@@ -222,19 +222,19 @@ authorization that leaves no trace is an authorization nobody can audit.
 `scope-write-gate` refuses a write landing outside `HARNESS_WRITE_SCOPE`.
 
 ```sh
-echo '{"tool_name":"Write","tool_input":{"file_path":"/tmp/agent-controls-quickstart/elsewhere/notes.md","content":"x"}}' \
+echo '{"tool_name":"Write","tool_input":{"file_path":"/tmp/integrity-framework-quickstart/elsewhere/notes.md","content":"x"}}' \
   | python3 $HARNESS_HOME/adapters/claude-code/hooks/scope-write-gate.py
 echo "exit=$?"
 ```
 
 ```
 BLOCKED (scope-write gate): writing OUTSIDE this agent's perimeter.
-  target:    /tmp/agent-controls-quickstart/elsewhere/notes.md
-  perimeter: /tmp/agent-controls-quickstart/demo
+  target:    /tmp/integrity-framework-quickstart/elsewhere/notes.md
+  perimeter: /tmp/integrity-framework-quickstart/demo
 Each role owns a perimeter. Writing code or mutating configuration outside it is another role's gesture, and that drift is silent: it looks like work done, it lands where nobody reviews it.
 Normal route: leave a dated deliverable INSIDE your perimeter and hand the gesture over to the role that owns it.
 Sanctioned one-shot, only AFTER an explicit human GO:
-  python3 /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks/scope-stamp.py <prefix> --reason '...'
+  python3 /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks/scope-stamp.py <prefix> --reason '...'
 (30-minute window, ONE prefix, journaled as skip-stamp.)
 Widen the perimeter for good instead: HARNESS_WRITE_SCOPE (colon-separated).
 Session kill-switch: HARNESS_SCOPE_WRITE_GATE_DISABLE=1
@@ -255,7 +255,7 @@ cat $HARNESS_STATE_DIR/gate-stats.jsonl
 {"ts": "2026-08-05T14:59:22", "hook": "home-prefix", "result": "block", "cmd": "HOME=/tmp/elsewhere python3 -c \"print(1)\""}
 {"ts": "2026-08-05T14:59:22", "hook": "destructive-command", "result": "block", "pattern": "privilege escalation: sudo"}
 {"ts": "2026-08-05T14:59:23", "hook": "destructive-command", "result": "skip-authorized"}
-{"ts": "2026-08-05T14:59:23", "hook": "scope-write", "result": "block", "path": "/tmp/agent-controls-quickstart/elsewhere/notes.md"}
+{"ts": "2026-08-05T14:59:23", "hook": "scope-write", "result": "block", "path": "/tmp/integrity-framework-quickstart/elsewhere/notes.md"}
 ```
 
 Five lines, five executions, and the fourth one is the authorization you granted
@@ -288,17 +288,17 @@ OK   settings  settings.json - 3 hooks wired
 OK   script    home-prefix-gate.py - present, syntax OK (settings.json)
 OK   script    destructive-command-gate.py - present, syntax OK (settings.json)
 OK   script    scope-write-gate.py - present, syntax OK (settings.json)
-WARN orphan    destructive-dry-run-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
-WARN orphan    grep-quantifier-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
-WARN orphan    hook-retire-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
-WARN orphan    interlock-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    destructive-dry-run-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    grep-quantifier-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    hook-retire-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    interlock-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
 SKIP orphan    interlock-stamp.py - exempt, run by hand by design
-WARN orphan    isolated-llm-measure-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
-WARN orphan    response-length-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    isolated-llm-measure-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    response-length-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
 SKIP orphan    scope-stamp.py - exempt, run by hand by design
-WARN orphan    settings-go-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
-WARN orphan    shell-false-success-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
-WARN orphan    workflow-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    settings-go-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    shell-false-success-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    workflow-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
 OK   journal   gate-stats.jsonl - fresh (0.0 h), last line valid JSON
 OK   coverage  home-prefix-gate.py - 2 trace(s) in the journal over 7 days
 OK   coverage  destructive-command-gate.py - 2 trace(s) in the journal over 7 days
@@ -360,7 +360,7 @@ python3 $HARNESS_HOME/core/sentinel/sentinel.py --settings .claude/settings.json
 
 ```
 destructive-command-gate unwired from settings.json
-WARN orphan    destructive-command-gate.py - on disk in /tmp/agent-controls-quickstart/agent-controls/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    destructive-command-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
 VERDICT WARN - 6 OK / 10 WARN / 0 FAIL / 2 SKIP
 ```
 
@@ -371,7 +371,7 @@ inventory that can be trusted is the one the system itself declares.
 ## Clean up
 
 ```sh
-rm -rf /tmp/agent-controls-quickstart
+rm -rf /tmp/integrity-framework-quickstart
 ```
 
 Nothing was installed, no unit was enabled, nothing outside that directory was

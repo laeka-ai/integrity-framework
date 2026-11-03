@@ -1,24 +1,46 @@
 <div align="center">
 
-# agent-controls
+# integrity-framework
 
-### Discipline for coding agents, armed rather than promised.
-
-**13 deterministic gates · a 3-layer behavioral shield · statutory memory ·
-a journal that proves every gate ran · a governor of two adversarial judges ·
-two local panels over your fleet**
+### The integrity layer for coding agents: rules that run, not rules that are promised.
 
 *Standard library only. No install step, no dependency to audit.*
 
-[![CI](https://github.com/EmergentSpirit/agent-controls/actions/workflows/ci.yml/badge.svg)](https://github.com/EmergentSpirit/agent-controls/actions/workflows/ci.yml)
+[![CI](https://github.com/laeka-ai/integrity-framework/actions/workflows/ci.yml/badge.svg)](https://github.com/laeka-ai/integrity-framework/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-359%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-396%20passing-brightgreen.svg)](tests/)
 [![Dependencies](https://img.shields.io/badge/dependencies-none-informational.svg)](#why-there-is-no-install-step)
 
-[Quickstart](docs/quickstart.md) · [Install on Claude Code](docs/install-claude-code.md) · [Architecture](ARCHITECTURE.md) ·
-[The gates](docs/gates/) · [Contributing](CONTRIBUTING.md)
+[laeka.ai](https://laeka.ai) · [Quickstart](docs/quickstart.md) · [Install on Claude Code](docs/install-claude-code.md) ·
+[Install on Pi](docs/install-pi.md) · [Architecture](ARCHITECTURE.md) · [The gates](docs/gates/) · [Contributing](CONTRIBUTING.md)
 
 </div>
+
+---
+
+## What the integrity layer is
+
+An agent that writes code can also say "done" when it is not, delete what it was
+told to keep, or install a package that does not exist. The integrity layer is the
+set of small mechanisms that sit **between the agent and the machine** and refuse
+those gestures: deterministic gates on what it runs and writes, rules that apply at
+the moment of risk, a memory that cannot contradict itself, and a journal that
+proves every gate actually ran. It does not make the model smarter. It makes the
+model's mistakes cheap, visible and reversible.
+
+**The demo in one sentence:** give the same model the same task with and without the
+layer, and only the run with the layer is stopped from the destructive command, the
+invented package and the unreal "done", while saying so in the journal.
+
+### Two versions
+
+| Version | Host | Where | Install |
+|:--|:--|:--|:--|
+| **Claude Code** | A human works in the session; gates are a drift net | `adapters/claude-code/` | [docs/install-claude-code.md](docs/install-claude-code.md) |
+| **Pi** | An unattended agent; the gate is the last wall, so it is stricter and fail-closed | `adapters/pi/` | [docs/install-pi.md](docs/install-pi.md) |
+
+Both share one core and the same destructive-command gate; the Pi adapter wraps it
+instead of copying it ([ARCHITECTURE.md](ARCHITECTURE.md), "Pi adapter").
 
 ---
 
@@ -50,7 +72,7 @@ credibility of all the others.
 
 ## What is in here
 
-Nine modules. Take one, take all of them; a single gate dropped into your own
+Ten modules. Take one, take all of them; a single gate dropped into your own
 hooks directory is a legitimate way to use this.
 
 | Module | What it does |
@@ -63,6 +85,7 @@ hooks directory is a legitimate way to use this.
 | **`core/governor/`** | New rules face **two adversarial judges**, then a seven-day observation trial, before anything gets armed. |
 | **`tools/watch/`** | A read-only local panel over gates and sessions, with a post-hoc analyst that proposes and never acts. |
 | **`tools/mission-control/`** | A read-only local panel over the **present**: which roles are alive, what is scheduled, and what is waiting on a human. |
+| **`adapters/pi/`** | The Pi version: bash boundary, write guard, install guard (OpenSSF base), fail-closed patch, tool-call helper. |
 | **`adapters/claude-code/launchers/`** | Wiring templates: example settings per role, a vault pattern, and systemd units that carry the PATH trap's fix. |
 
 ### The fifteen gates, and the day each one was earned
@@ -229,9 +252,9 @@ kind.
 ## Start here
 
 ```bash
-git clone https://github.com/EmergentSpirit/agent-controls.git
-cd agent-controls
-python3 -m pytest tests/ -q         # 359 tests, no outbound network, no install
+git clone https://github.com/laeka-ai/integrity-framework.git
+cd integrity-framework
+python3 -m pytest tests/ -q         # 396 tests, no outbound network, no install
 ```
 
 Then [**docs/quickstart.md**](docs/quickstart.md): fifteen minutes from clone to
