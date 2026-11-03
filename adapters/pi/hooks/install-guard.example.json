@@ -1,0 +1,6 @@
+{
+  "registries": {"npm": "https://registry.npmjs.org", "pypi": "https://pypi.org", "crates": "https://crates.io"},
+  "min_version_age_days": 7,
+  "lookalike_max_age_days": 180,
+  "timeout_s": 5
+}

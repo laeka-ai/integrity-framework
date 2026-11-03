@@ -1,0 +1,50 @@
+{
+ "source": "https://github.com/ossf/malicious-packages",
+ "license": "Apache-2.0",
+ "commit": "ff444acb739c7b4291b0d5cb0a2a4b797bd8fed9",
+ "commit_date": "2026-11-02T17:18:53Z",
+ "generated": "2026-11-02T17:26:15Z",
+ "fields": [
+  "ecosystem",
+  "name",
+  "versions or all",
+  "MAL id"
+ ],
+ "_sample": "A SAMPLE of 5 rows, for the tests and the docs. Regenerate the full base with adapters/pi/hooks/regenerate-malicious-packages.py.",
+ "packages": [
+  [
+   "pypi",
+   "aaiohttp",
+   "all",
+   "MAL-2023-1574"
+  ],
+  [
+   "pypi",
+   "adad",
+   "all",
+   "MAL-2023-2476"
+  ],
+  [
+   "pypi",
+   "adcandy",
+   "all",
+   "MAL-2023-2477"
+  ],
+  [
+   "crates",
+   "amzn-codewhisperer-streaming-client",
+   [
+    "99.0.1"
+   ],
+   "MAL-2026-3103"
+  ],
+  [
+   "crates",
+   "amzn-consolas-client",
+   [
+    "99.0.1"
+   ],
+   "MAL-2026-3101"
+  ]
+ ]
+}
