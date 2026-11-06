@@ -2,7 +2,7 @@
 
 # Integrity Framework
 
-**by [laeka.ai](https://laeka.ai)**
+**by [Laeka](https://laeka.ai)**
 
 ### The integrity layer for coding agents: rules that run, not rules that are promised.
 
