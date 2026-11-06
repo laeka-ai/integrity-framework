@@ -294,16 +294,23 @@ WARN orphan    hook-retire-gate.py - on disk in /tmp/integrity-framework-quickst
 WARN orphan    interlock-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
 SKIP orphan    interlock-stamp.py - exempt, run by hand by design
 WARN orphan    isolated-llm-measure-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    memory-verdict-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    pgrep-self-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    recall-inject.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    recall-staging.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
 WARN orphan    response-length-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
 SKIP orphan    scope-stamp.py - exempt, run by hand by design
+WARN orphan    set-e-inert-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
 WARN orphan    settings-go-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
 WARN orphan    shell-false-success-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    shield-inject.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
+WARN orphan    shield-reviewer.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
 WARN orphan    workflow-gate.py - on disk in /tmp/integrity-framework-quickstart/integrity-framework/adapters/claude-code/hooks but wired in NO settings file
 OK   journal   gate-stats.jsonl - fresh (0.0 h), last line valid JSON
 OK   coverage  home-prefix-gate.py - 2 trace(s) in the journal over 7 days
 OK   coverage  destructive-command-gate.py - 2 trace(s) in the journal over 7 days
 OK   coverage  scope-write-gate.py - 1 trace(s) in the journal over 7 days
-VERDICT WARN - 8 OK / 9 WARN / 0 FAIL / 2 SKIP
+VERDICT WARN - 8 OK / 16 WARN / 0 FAIL / 2 SKIP
 exit=0
 ```
 
@@ -311,8 +318,8 @@ How to read it:
 
 - the three `coverage` lines are the point of the whole exercise: each wired
   gate left a trace, so each one is provably ALIVE, not merely present;
-- the `orphan` WARNs are correct and expected here. `adapters/claude-code/hooks/` ships twelve
-  gates plus helpers and you wired three; every other script sits on disk, wired nowhere. A gate
+- the `orphan` WARNs are correct and expected here. `adapters/claude-code/hooks/` ships fifteen
+  gates plus the recall and shield hooks, and you wired three; every other script sits on disk, wired nowhere. A gate
   somebody believes is armed and is not, is exactly the expensive case;
 - the `SKIP orphan` lines are the stamp tools, exempt by design (a human
   runs them by hand). Exemptions are printed rather than hidden, so an exemption
@@ -332,7 +339,7 @@ Example output:
 
 ```
 2026-08-05.txt
-{"ts": "2026-08-05T14:59:23", "hook": "sentinel", "result": "observe", "verdict": "WARN", "ok": 8, "warn": 9, "fail": 0, "skip": 2, "hooks": 3, "settings": 1}
+{"ts": "2026-08-05T14:59:23", "hook": "sentinel", "result": "observe", "verdict": "WARN", "ok": 8, "warn": 16, "fail": 0, "skip": 2, "hooks": 3, "settings": 1}
 ```
 
 `observe` because the sentinel blocks nothing. It reads, it reports, a human
