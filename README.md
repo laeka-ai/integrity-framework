@@ -1,6 +1,8 @@
 <div align="center">
 
-# integrity-framework
+# Integrity Framework
+
+**by [laeka.ai](https://laeka.ai)**
 
 ### The integrity layer for coding agents: rules that run, not rules that are promised.
 
@@ -296,4 +298,4 @@ the mechanism working.
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE).
+Integrity Framework is a laeka.ai product, released under Apache-2.0. See [LICENSE](LICENSE).
