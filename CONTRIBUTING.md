@@ -79,7 +79,9 @@ looked like a success. Write that story into
 `docs/gates/<name>.md` under **Founding incident**, and write it in enough
 detail that a stranger can judge whether your line is drawn in the right place.
 
-Look at the twelve pages in [docs/gates/](docs/gates/) before writing yours.
+Look at the pages in [docs/gates/](docs/gates/) before writing yours (eighteen today:
+fourteen Claude Code gates and four Pi gates; the memory-verdict gate is documented in
+[docs/statutory-memory.md](docs/statutory-memory.md)).
 Every one of them names a real day. Some of them name the amount of money the
 lesson cost.
 
@@ -215,7 +217,7 @@ reviewable gesture.
 
 ### 3. The page: `docs/gates/<name>.md`, three sections
 
-Same three headings as the other twelve, in this order:
+Same three headings as the other gate pages, in this order:
 
 ```markdown
 # <name>-gate
