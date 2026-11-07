@@ -14,7 +14,7 @@
 [![Dependencies](https://img.shields.io/badge/dependencies-none-informational.svg)](#why-there-is-no-install-step)
 
 [laeka.ai](https://laeka.ai) · [Quickstart](docs/quickstart.md) · [Install on Claude Code](docs/install-claude-code.md) ·
-[Install on Pi](docs/install-pi.md) · [Architecture](ARCHITECTURE.md) · [The gates](docs/gates/) · [Contributing](CONTRIBUTING.md)
+[Install on Pi](docs/install-pi.md) · [The sixteen layers](#the-sixteen-layers) · [Architecture](ARCHITECTURE.md) · [The gates](docs/gates/) · [Contributing](CONTRIBUTING.md)
 
 </div>
 
@@ -69,6 +69,38 @@ Notice the shape of the refusal. It says what was blocked, why, **the working
 alternative**, and the documented way out. A gate that only says no teaches an
 agent to route around gates, and it takes exactly one of those to poison the
 credibility of all the others.
+
+---
+
+## The sixteen layers
+
+The Integrity Framework is sixteen layers, each named for its mechanism. **All
+sixteen are proven**: each one was tested on a live test pod of
+[Starpod](https://starpod.ai), and each test left a dated receipt. A status is
+never wider than its receipt, so the "Proven" column says only what the test showed.
+
+| Layer | What it does | Proven (last receipt) |
+|:--|:--|:--|
+| **Key** | Actions that cost money beyond a capped budget, or that destroy without a net, do not run until a person touches a physical key. | 2026-11-04 |
+| **Governor** | Every action is classified before it runs. Its class decides whether it runs alone or waits for a person. | 2026-11-01 |
+| **Canary Camp** | Every hour the system sends itself a mark and checks that it arrives by the normal path. One probe must fail: if it passes, the test is broken. | 2026-11-06 |
+| **Vault** | Keys and passwords stay sealed, are opened for one precise action, and are never written in clear. | 2026-11-01 |
+| **Restore** | A copy leaves every night. Every week a full system is rebuilt from it. | 2026-11-06 |
+| **Panel** | One page shows the real state and holds the actions the system cannot take alone. Proven: a Decline closes the decision and nothing runs; an Approve without the passkey signature is refused. | 2026-11-01 |
+| **Lenses** | When a turn changes the client's workspace, independent reviewers read the deliverable before it goes out. A deliverable that fails goes back for rework. | 2026-11-01 |
+| **Judge** | A second opinion contests the answer after the fact and records its disagreement. It observes, without power over what is delivered. | 2026-11-07 |
+| **Self Repair** | A fault it can repair comes back on its own. Proven: a fault it cannot repair is given up after its attempts and escalated, never left silent. | 2026-11-07 |
+| **Loop** | An error is written with its verdict, then becomes a guard that blocks the same error next time. | 2026-11-01 |
+| **Warden** | Each pod reaches only the services it is allowed. Proven: an unlisted name is refused and raises an alert. | 2026-11-06 |
+| **Library Shield** | Packages reach the pod only through its own mirror. npm installs a real package and refuses an invented name. pip is not on the pod, so this covers npm only. | 2026-11-06 |
+| **Airlock** | Private data, untrusted content and a way out must not meet in one turn. After an untrusted read, the way out is cut and any send waits for a person. Proven with a scripted provider. | 2026-11-03 |
+| **Readback** | Before approving a sensitive authorization, the person says in their own words what it allows. A wrong reading is refused and nothing is written. | 2026-11-01 |
+| **Black Box** | An audit from outside the pod reads the journal of its actions and catches any action run without its decision. Proven: the passive audit. | 2026-11-06 |
+| **Backstage** | Inspects what the agent is mounted with (agent files, hooks, MCP servers, permissions, secrets). A daily scan plants three inert witnesses and fails if it misses one. | 2026-11-06 |
+
+This repository publishes the first part of the framework: the gates, the shield,
+statutory memory, the rule governor and the two panels that run beside a coding agent. The
+specification of all sixteen layers is on [laeka.ai](https://laeka.ai).
 
 ---
 
