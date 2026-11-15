@@ -23,6 +23,7 @@ The Integrity Framework borrows ideas from these open projects. Thank you to the
 - [jakeschincariol/founder-skill](https://github.com/jakeschincariol/founder-skill): the founder skill pack (board, offer, pricing, CFO...)
 - [mattpocock/skills](https://github.com/mattpocock/skills): writing for agents: the target before the prohibition
 - [nousresearch/hermes-agent](https://github.com/nousresearch/hermes-agent): forked as the base of the Atlas agent
+- [nvidia/skillspector](https://github.com/nvidia/skillspector): skill scanner invoked by `core/skill_guard/skill-guard.sh` (called, not bundled)
 - [nutlope/hallmark](https://github.com/nutlope/hallmark): scored six-axis critique next to the deliverable
 - [obra/superpowers](https://github.com/obra/superpowers): engineering skills forked (MIT)
 - [omnigent-ai/omnigent](https://github.com/omnigent-ai/omnigent): an effect applies only on explicit accept

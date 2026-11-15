@@ -234,6 +234,8 @@ Who depends on whom, in full:
 | `core/recall/` | `_hook`, `_exec_guard`, `core/recall/recall.py` (engine, reused by `curate.py` as its own validator) | yes |
 | `core/sentinel/` | `_hook`, `_exec_guard`; READS settings files and the journal | yes |
 | `core/governor/` | `_hook` via `core/governor/_state.py`; `core/governor/judges.py` | yes |
+| `core/canary/` | `_hook`; READS the receipts journal; `adapters/claude-code/hooks/subagent-canary.py` maps the transcript into its events (`_transcript.tool_events`) | yes |
+| `core/quarantine/` | `_hook`; `adapters/claude-code/hooks/quarantine-check.py` maps a reader sub-agent's transcript (WebFetch, WebSearch) and report into its events (`_transcript.tool_events`) | yes |
 | `tools/watch/` | `_hook` via `tools/watch/config.py`; READS transcripts and journals | yes |
 
 Two properties fall out of that shape.

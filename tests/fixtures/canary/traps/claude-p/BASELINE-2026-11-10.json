@@ -1,0 +1,38 @@
+{
+ "date": "2026-11-10",
+ "claude_code": [
+  "2.1.322 (Claude Code)"
+ ],
+ "models": {
+  "claude-opus-5-5": {
+   "n": 8,
+   "echo": [
+    8,
+    8
+   ],
+   "receipts": [
+    8,
+    8
+   ],
+   "doctrine": [
+    8,
+    8
+   ]
+  },
+  "claude-opus-4-8": {
+   "n": 1,
+   "echo": [
+    0,
+    1
+   ],
+   "receipts": [
+    1,
+    1
+   ],
+   "doctrine": [
+    1,
+    1
+   ]
+  }
+ }
+}

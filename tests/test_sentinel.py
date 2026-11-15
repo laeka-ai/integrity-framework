@@ -17,6 +17,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -33,6 +34,17 @@ SENTINEL = ROOT / "core" / "sentinel" / "sentinel.py"
 
 VALID_HOOK = "#!/usr/bin/env python3\nimport sys\nsys.exit(0)\n"
 BROKEN_HOOK = "#!/usr/bin/env python3\ndef broken(:\n    pass\n"
+
+
+def need(*binaries):
+    """Skip, by name, a case whose binary is not installed. The exec guard
+    resolves the binary on PATH BEFORE it reads its rules: without it every
+    line is refused for that one reason, so a case would go red for the
+    machine, or green without ever reaching the rule it claims to prove."""
+    missing = [b for b in binaries if shutil.which(b) is None]
+    if missing:
+        raise unittest.SkipTest("not installed: %s (the exec guard refuses on "
+                                "PATH before its rules)" % ", ".join(missing))
 
 
 def sentinel_module():
@@ -381,6 +393,7 @@ class TestProbeExecution(SentinelBase):
     def test_t22_the_allowlist_is_a_binary_not_a_word_and_carries_its_rules(self):
         """A planted binary that merely SHARES the name does not pass, and an
         allowlisted binary is still confined to read-only use."""
+        need("curl", "systemctl")
         planted = self.hooks / "test"
         planted.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
         planted.chmod(0o755)
@@ -425,6 +438,7 @@ class TestProbeExecution(SentinelBase):
         of it claimed while one still accepted `-o/tmp/loot` and the other did
         not. Both import core/common/_exec_guard.py, so `is` holds here and a fix
         can no longer land on one side only."""
+        need("curl", "systemctl")
         mod = sentinel_module()
         spec = importlib.util.spec_from_file_location(
             "recall_for_parity", str(ROOT / "core" / "recall" / "recall.py"))
@@ -478,6 +492,7 @@ class TestProbeCurlAllowlist(SentinelBase):
     """
 
     def setUp(self):
+        need("curl")  # every case here runs its attack next to a curl probe
         super().setUp()
         self.loot = self.root / "loot"
         self.loot.mkdir()
@@ -651,6 +666,7 @@ class TestProbeCurlAllowlist(SentinelBase):
     def test_t39_a_legitimate_health_probe_still_runs(self):
         """The load-bearing counterweight. A gate that refuses every line is
         not a safe gate, it is a dead feature."""
+        need("systemctl")
         r = self.probe_run([self.legit,
                             "curl -s -o /dev/null --connect-timeout 2 %s" % self.url,
                             "curl -sSI --max-time 5 -o /dev/null %s" % self.url,
@@ -670,6 +686,7 @@ class TestProbeCurlAllowlist(SentinelBase):
     def test_t40_the_allowlist_is_a_pure_function_and_says_why(self):
         """Every refusal carries its reason, and the same rules hold for the
         two other allowlisted binaries."""
+        need("systemctl")
         mod = sentinel_module()
         allow = set(mod.DEFAULT_PROBE_ALLOW)
         for allowed in ("curl -fsS --max-time 5 -o /dev/null https://example.com",

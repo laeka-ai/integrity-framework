@@ -10,11 +10,11 @@
 
 [![CI](https://github.com/laeka-ai/integrity-framework/actions/workflows/ci.yml/badge.svg)](https://github.com/laeka-ai/integrity-framework/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-396%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-615%20passing-brightgreen.svg)](tests/)
 [![Dependencies](https://img.shields.io/badge/dependencies-none-informational.svg)](#why-there-is-no-install-step)
 
 [laeka.ai](https://laeka.ai) · [Quickstart](docs/quickstart.md) · [Install on Claude Code](docs/install-claude-code.md) ·
-[Install on Pi](docs/install-pi.md) · [The sixteen layers](#the-sixteen-layers) · [Architecture](ARCHITECTURE.md) · [The gates](docs/gates/) · [Contributing](CONTRIBUTING.md)
+[Install on Pi](docs/install-pi.md) · [Architecture](ARCHITECTURE.md) · [The gates](docs/gates/) · [Contributing](CONTRIBUTING.md)
 
 </div>
 
@@ -42,7 +42,8 @@ invented package and the unreal "done", while saying so in the journal.
 | **Pi** | An unattended agent; the gate is the last wall, so it is stricter and fail-closed | `adapters/pi/` | [docs/install-pi.md](docs/install-pi.md) |
 
 Both share one core and the same destructive-command gate; the Pi adapter wraps it
-instead of copying it ([ARCHITECTURE.md](ARCHITECTURE.md), "Pi adapter").
+instead of copying it ([ARCHITECTURE.md](ARCHITECTURE.md), "Pi adapter"). What each Pi guard
+does, and its known limits: [docs/pi-adapter.md](docs/pi-adapter.md).
 
 ---
 
@@ -72,38 +73,6 @@ credibility of all the others.
 
 ---
 
-## The sixteen layers
-
-The Integrity Framework is sixteen layers, each named for its mechanism. **All
-sixteen are proven**: each one was tested on a live test pod of
-[Starpod](https://starpod.ai), and each test left a dated receipt. A status is
-never wider than its receipt, so the "Proven" column says only what the test showed.
-
-| Layer | What it does | Proven (last receipt) |
-|:--|:--|:--|
-| **Key** | Actions that cost money beyond a capped budget, or that destroy without a net, do not run until a person touches a physical key. | 2026-11-04 |
-| **Governor** | Every action is classified before it runs. Its class decides whether it runs alone or waits for a person. | 2026-11-01 |
-| **Canary Camp** | Every hour the system sends itself a mark and checks that it arrives by the normal path. One probe must fail: if it passes, the test is broken. | 2026-11-06 |
-| **Vault** | Keys and passwords stay sealed, are opened for one precise action, and are never written in clear. | 2026-11-01 |
-| **Restore** | A copy leaves every night. Every week a full system is rebuilt from it. | 2026-11-06 |
-| **Panel** | One page shows the real state and holds the actions the system cannot take alone. Proven: a Decline closes the decision and nothing runs; an Approve without the passkey signature is refused. | 2026-11-01 |
-| **Lenses** | When a turn changes the client's workspace, independent reviewers read the deliverable before it goes out. A deliverable that fails goes back for rework. | 2026-11-01 |
-| **Judge** | A second opinion contests the answer after the fact and records its disagreement. It observes, without power over what is delivered. | 2026-11-07 |
-| **Self Repair** | A fault it can repair comes back on its own. Proven: a fault it cannot repair is given up after its attempts and escalated, never left silent. | 2026-11-07 |
-| **Loop** | An error is written with its verdict, then becomes a guard that blocks the same error next time. | 2026-11-01 |
-| **Warden** | Each pod reaches only the services it is allowed. Proven: an unlisted name is refused and raises an alert. | 2026-11-06 |
-| **Library Shield** | Packages reach the pod only through its own mirror. npm installs a real package and refuses an invented name. pip is not on the pod, so this covers npm only. | 2026-11-06 |
-| **Airlock** | Private data, untrusted content and a way out must not meet in one turn. After an untrusted read, the way out is cut and any send waits for a person. Proven with a scripted provider. | 2026-11-03 |
-| **Readback** | Before approving a sensitive authorization, the person says in their own words what it allows. A wrong reading is refused and nothing is written. | 2026-11-01 |
-| **Black Box** | An audit from outside the pod reads the journal of its actions and catches any action run without its decision. Proven: the passive audit. | 2026-11-06 |
-| **Backstage** | Inspects what the agent is mounted with (agent files, hooks, MCP servers, permissions, secrets). A daily scan plants three inert witnesses and fails if it misses one. | 2026-11-06 |
-
-This repository publishes the first part of the framework: the gates, the shield,
-statutory memory, the rule governor and the two panels that run beside a coding agent. The
-specification of all sixteen layers is on [laeka.ai](https://laeka.ai).
-
----
-
 ## What is in here
 
 Ten modules. Take one, take all of them; a single gate dropped into your own
@@ -121,6 +90,33 @@ hooks directory is a legitimate way to use this.
 | **`tools/mission-control/`** | A read-only local panel over the **present**: which roles are alive, what is scheduled, and what is waiting on a human. |
 | **`adapters/pi/`** | The Pi version: bash boundary, write guard, install guard (OpenSSF base), fail-closed patch, tool-call helper. |
 | **`adapters/claude-code/launchers/`** | Wiring templates: example settings per role, a vault pattern, and systemd units that carry the PATH trap's fix. |
+
+### Layer status
+
+Nineteen layers are **proven**: each was run against a real witness and the result
+is on file; the table lists them so a reader can tell what each one holds.
+
+| Layer | Status | What it does |
+|:--|:--|:--|
+| Key | proven | A decision is approved only by a hardware-key signature, never by a token alone. |
+| Governor | proven | A destructive agent gesture is held as a pending decision until a human answers. |
+| Canary Camp | proven | A scheduled canary reads the relay path red when it breaks and green when it returns. |
+| Vault | proven | The agent holds no provider key; calls go through a vault that counts them. |
+| Restore | proven | The newest backup is pulled read-only and checked for readability and freshness. |
+| Panel | proven | A declined decision runs nothing; approval without the passkey is refused. |
+| Lenses | proven | Review lenses send back a defective deliverable and pass a clean one. |
+| Judge | proven | A second opinion on each turn, bound to the pod it came from. |
+| Self Repair | proven | A repairer restarts what it can and journals the give-up when it cannot. |
+| Loop | proven | Outgoing messages to contacts are held on a guard verdict. |
+| Warden | proven | The download door withholds framework files and serves client files. |
+| Library Shield | proven | Package installs answer 404 for names that do not exist. |
+| Airlock | proven | An outbound transfer attempted mid-turn is cut before it reaches the target. |
+| Readback | proven | An authorization with a wrong readback is refused and nothing is written. |
+| Black Box | proven | A passive audit reports any gesture executed without a decision. |
+| Backstage | proven | A daily timer plants witnesses and fails loudly when one is not seen. |
+| [Promised-Fix Verifier](docs/promised-fix-verifier.md) | proven | A claimed fix is checked against the failure it promised to remove, with a verdict the agent does not write. |
+| [Sub-Agent Canary](docs/canary-layer.md) | proven | A delegated agent's report is confronted with receipts and transcript tool calls the agent does not write, and a forged or contradicted claim is flagged. |
+| [Quarantine](docs/quarantine-layer.md) | proven | A reader agent has no hands, and its report is checked against the tool events of its own run; the 20 trap pages are caught, 20 of 20. |
 
 ### The fifteen gates, and the day each one was earned
 
@@ -288,7 +284,7 @@ kind.
 ```bash
 git clone https://github.com/laeka-ai/integrity-framework.git
 cd integrity-framework
-python3 -m pytest tests/ -q         # 396 tests, no outbound network, no install
+python3 -m pytest tests/ -q         # 615 tests, no outbound network, no install
 ```
 
 Then [**docs/quickstart.md**](docs/quickstart.md): fifteen minutes from clone to

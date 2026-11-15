@@ -12,7 +12,7 @@ Requirements: Python 3.10 or newer, a Pi agent with pi-yaml-hooks 2026.8.11
    `docs/gates/pi-*.md`. The bash boundary sends the command to the shared gate in
    `adapters/claude-code/hooks/destructive-command-gate.py`, which must therefore be copied too
    (copy the whole `adapters/` and `core/` trees).
-3. **Run the tests** on your copy: `python3 -m pytest tests -q -k pi`. Expected: all green, no network.
+3. **Run the tests** on your copy: `python3 -m unittest discover -s tests -p 'test_pi_*.py'`. Expected: all green, no network.
 4. **Set the environment** the guards read: `PI_WORKSHOP` (the only place the agent may write),
    `PI_JOURNAL`, `PI_HOST_AUTHORIZATIONS` (read-only JSON lines, empty at first),
    `PI_GATE_SHA` (a file holding the sha256 of the shared gate, optional but recommended),

@@ -16,6 +16,21 @@
           {
             "type": "command",
             "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/shield-inject.py --agent builder"
+          },
+          {
+            "type": "command",
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/promised-fix-detect.py"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "researcher",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/quarantine-check.py"
           }
         ]
       }
@@ -50,6 +65,10 @@
           {
             "type": "command",
             "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/hook-retire-gate.py"
+          },
+          {
+            "type": "command",
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/quarantine-flow-gate.py"
           }
         ]
       },
@@ -79,6 +98,15 @@
           {
             "type": "command",
             "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/memory-verdict-gate.py"
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $HARNESS_HOME/adapters/claude-code/hooks/promised-fix-claim-gate.py"
           }
         ]
       }

@@ -22,6 +22,7 @@ import importlib.util
 import itertools
 import json
 import os
+import shutil
 import stat
 import subprocess
 import sys
@@ -72,6 +73,17 @@ def run_proc(argv, payload=None, env_extra=None, raw_stdin=None):
     return subprocess.run([sys.executable] + [str(a) for a in argv],
                           input=data, capture_output=True, text=True,
                           env=env, timeout=60)
+
+
+def need(*binaries):
+    """Skip, by name, a case whose binary is not installed. The exec guard
+    resolves the binary on PATH BEFORE it reads its rules: without it every
+    line is refused for that one reason, so a case would go red for the
+    machine, or green without ever reaching the rule it claims to prove."""
+    missing = [b for b in binaries if shutil.which(b) is None]
+    if missing:
+        raise unittest.SkipTest("not installed: %s (the exec guard refuses on "
+                                "PATH before its rules)" % ", ".join(missing))
 
 
 class ModuleLoader(unittest.TestCase):
@@ -324,6 +336,7 @@ class TestCheckSafety(ModuleLoader):
 
     def refuse(self, attack, hint):
         """Refused, nothing written, nothing sent."""
+        need(attack.split()[0])
         status, reason = self.engine.run_check(attack)
         self.assertEqual(status, self.engine.CHECK_REFUSED,
                          "%r was not refused (status=%r)" % (attack, status))
@@ -354,6 +367,7 @@ class TestCheckSafety(ModuleLoader):
             self.assertTrue(reason, "a refusal must say why: %s" % label)
 
     def test_t13_allowlist_and_per_binary_rules(self):
+        need("curl", "systemctl")
         refused = [
             "bash -c true",                        # outside the allowlist
             "rm -rf /var/tmp/whatever",            # outside the allowlist
@@ -501,6 +515,7 @@ class TestCheckSafety(ModuleLoader):
         """The load-bearing counterweight, and the proof the sink is real: a
         gate that refuses every line is not a safe gate, it is a dead feature,
         and an empty server log means nothing until this GET shows up in it."""
+        need("curl", "systemctl")
         for allowed in ("curl -fsS --max-time 5 -o /dev/null %s" % self.url,
                         "curl -s -o /dev/null --connect-timeout 2 %s" % self.url,
                         "curl -sSI -m 5 -o /dev/null %s" % self.url,

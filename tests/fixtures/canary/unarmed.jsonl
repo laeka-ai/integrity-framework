@@ -1,0 +1,2 @@
+{"type":"user","message":{"role":"user","content":"Summarise the README."}}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"Done."}]}}
