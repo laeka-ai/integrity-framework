@@ -14,7 +14,7 @@ from urllib.parse import unquote
 ROOT = Path(__file__).resolve().parent.parent
 README = Path(os.environ.get("README_UNDER_TEST") or ROOT / "README.md")
 # Counts of the Status column; a change of count is a decision, made here and in the README together.
-EXPECTED_STATUS = {"proven": 19}
+EXPECTED_STATUS = {"proven": 20}
 # "N passed" lines that report one test file (CONTRIBUTING.md's worked mutation example), not the whole suite.
 SINGLE_FILE_RUNS = {("CONTRIBUTING.md", "7"), ("CONTRIBUTING.md", "8")}
 NUMBER_WORDS = {"one": 1, "two": 2, "three": 3, "four": 4, "sixteen": 16, "seventeen": 17, "eighteen": 18, "nineteen": 19, "twenty": 20}
@@ -124,12 +124,12 @@ class TestReadme(unittest.TestCase):
         stale = [n for n, line in self.lines if re.search(r"being built|planned", line)]
         self.assertEqual(stale, [], "README.md: 'being built' or 'planned' left at lines %s" % stale)
 
-    def test_skill_guard_row_absent(self):
+    def test_skill_guard_row_only_with_the_real_scanner(self):
         self.assertIsNotNone(self.layer_rows)
         named = [n for n, row in self.layer_rows if re.search(r"skill.?guard", " ".join(row), re.I)]
-        self.assertEqual(
-            named, [], "README.md: Skill Guard is not announced before the real scanner is in place; rows at lines %s" % named
-        )
+        guard = (ROOT / "core" / "skill_guard" / "skill-guard.sh").read_text(encoding="utf-8")
+        self.assertEqual(len(named), 1, "README.md: one Skill Guard row expected, at lines %s" % named)
+        self.assertIn("skillspector", guard, "README.md: Skill Guard is announced but the guard does not call SkillSpector")
 
     def test_test_counts_are_the_collected_count(self):
         raw = README.read_text(encoding="utf-8")
