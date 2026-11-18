@@ -1,0 +1,44 @@
+# red control: scanner replaced by a stub answering SAFE to everything (SKILLSPECTOR=/tmp/b65-preuves/safe-all.sh), head 1846274
+#!/bin/sh
+# simulacre: answers SAFE to everything. scan <dir> --no-llm -f json -o <report>
+for a; do :; done
+echo '{"risk_assessment": {"recommendation": "SAFE", "score": 0}}' > "$a"
+---
+test_any_change_voids_the_exception (tests.test_skill_guard.SkillGuardTest.test_any_change_voids_the_exception) ... ok
+test_exception_passes_today_not_after_expiry (tests.test_skill_guard.SkillGuardTest.test_exception_passes_today_not_after_expiry) ... ok
+test_line_without_fingerprint_is_ignored_and_named (tests.test_skill_guard.SkillGuardTest.test_line_without_fingerprint_is_ignored_and_named) ... ok
+test_link_is_followed_to_the_trap (tests.test_skill_guard.SkillGuardTest.test_link_is_followed_to_the_trap) ... ok
+test_missing_or_failing_scanner_refuses (tests.test_skill_guard.SkillGuardTest.test_missing_or_failing_scanner_refuses) ... ok
+test_plugin_root_is_refused (tests.test_skill_guard.SkillGuardTest.test_plugin_root_is_refused)
+With pluginRoot, claude installs <loc>/<pluginRoot>/<source>: a safe decoy at <loc>/<source> must not pass. ... ok
+test_real_scanner_guards_claude_plugin_install (tests.test_skill_guard.SkillGuardTest.test_real_scanner_guards_claude_plugin_install)
+The <plugin>@<marketplace> that `claude plugin install` takes is scanned in its marketplace folder. ... FAIL
+test_real_scanner_refuses_the_trap_passes_the_safe_skill (tests.test_skill_guard.SkillGuardTest.test_real_scanner_refuses_the_trap_passes_the_safe_skill) ... FAIL
+test_scan_runs_without_network (tests.test_skill_guard.SkillGuardTest.test_scan_runs_without_network) ... ok
+test_source_outside_the_marketplace_is_refused (tests.test_skill_guard.SkillGuardTest.test_source_outside_the_marketplace_is_refused) ... ok
+test_trap_refused_safe_passes (tests.test_skill_guard.SkillGuardTest.test_trap_refused_safe_passes) ... ok
+
+======================================================================
+FAIL: test_real_scanner_guards_claude_plugin_install (tests.test_skill_guard.SkillGuardTest.test_real_scanner_guards_claude_plugin_install)
+The <plugin>@<marketplace> that `claude plugin install` takes is scanned in its marketplace folder.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_skill_guard.py", line 116, in test_real_scanner_guards_claude_plugin_install
+    self.assertEqual(rc, 1, out)
+AssertionError: 0 != 1 : SAFE /tmp/tmpdnvbdd8u/market/plugins/trap (SAFE 0)
+
+
+======================================================================
+FAIL: test_real_scanner_refuses_the_trap_passes_the_safe_skill (tests.test_skill_guard.SkillGuardTest.test_real_scanner_refuses_the_trap_passes_the_safe_skill)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_skill_guard.py", line 88, in test_real_scanner_refuses_the_trap_passes_the_safe_skill
+    self.assertEqual(rc, 1, out)
+AssertionError: 0 != 1 : SAFE /tmp/tmpeo253o0f/trap (SAFE 0)
+
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.756s
+
+FAILED (failures=2)
+rc=1

@@ -34,7 +34,9 @@ docs/canary-layer.md for what they miss):
            characters holding a digit. proven: the sha appears in a tool
            output. contradicted: it appears in none.
   command  a line with "ran"/"re-ran"/"executed" -> each `backtick span`.
-           proven: a command event contains it. contradicted: none does.
+           proven: a command event contains it. unverifiable: only the
+           output of an event contains it (a test name a command printed).
+           contradicted: neither a command nor an output does.
   read     "read"/"reviewed"/"opened"/"inspected" -> the paths after the verb.
   write    "wrote"/"written"/"created"/"edited"/"modified"/"updated"/"added"
            -> the paths after the verb. A path is a token holding "/" that
@@ -269,6 +271,9 @@ def _evidence(claim, events):
         for e in events:
             if e["kind"] == "command" and text in " ".join(e["target"].split()):
                 return "proven", "command: " + e["target"][:120]
+        for e in events:   # a name a command printed is not a command that ran
+            if text in e["output"]:
+                return "unverifiable", "only named in the output of %s: %s" % (e["kind"], e["target"][:120])
         return "contradicted", "no command event contains it"
     for e in events:
         if e["kind"] == kind and _path_hit(text, e["target"]):

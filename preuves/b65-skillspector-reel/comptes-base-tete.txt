@@ -1,0 +1,8 @@
+# pytest tail, raw. base 6b9e4bf (git archive), head d550666
+== head tests/test_skill_guard.py
+11 passed, 7 subtests passed in 8.28s
+== base tests/test_skill_guard.py
+6 passed, 5 subtests passed in 0.62s
+== head tests/test_readme.py (README says 620, 620 collected)
+9 passed in 0.25s
+== neighbours: grep -rl skill-guard|skill_guard|pluginRoot|SKILLSPECTOR = test_readme.py only; red at base: none

@@ -10,7 +10,7 @@
 
 [![CI](https://github.com/laeka-ai/integrity-framework/actions/workflows/ci.yml/badge.svg)](https://github.com/laeka-ai/integrity-framework/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-615%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-625%20passing-brightgreen.svg)](tests/)
 [![Dependencies](https://img.shields.io/badge/dependencies-none-informational.svg)](#why-there-is-no-install-step)
 
 [laeka.ai](https://laeka.ai) · [Quickstart](docs/quickstart.md) · [Install on Claude Code](docs/install-claude-code.md) ·
@@ -284,7 +284,7 @@ kind.
 ```bash
 git clone https://github.com/laeka-ai/integrity-framework.git
 cd integrity-framework
-python3 -m pytest tests/ -q         # 615 tests, no outbound network, no install
+python3 -m pytest tests/ -q         # 625 tests, no outbound network, no install
 ```
 
 Then [**docs/quickstart.md**](docs/quickstart.md): fifteen minutes from clone to

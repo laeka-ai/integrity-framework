@@ -152,6 +152,25 @@ class TestClaims(unittest.TestCase):
         self.assertEqual({c["verdict"] for c in claims}, {"unverifiable"})
 
 
+class TestNameCitedFromOutput(Tmp):
+    REPORT = "Ran 13 tests, FAILED (errors=2): `test_alpha`, `test_beta`."
+    EVENTS = [ev("command", "grep ERROR log.txt", "ERROR: test_alpha\nERROR: test_beta")]
+
+    def verdicts(self, events):
+        claims = canary.check_claims(canary.extract_claims(self.REPORT), events)
+        return {c["verdict"] for c in claims}
+
+    def test_name_only_in_output_is_unverifiable_and_passes(self):
+        self.assertEqual(self.verdicts(self.EVENTS), {"unverifiable"})
+        self.assertTrue(self.run_all(self.REPORT, self.EVENTS)["passed"])
+
+    def test_name_in_no_output_nor_command_is_contradicted(self):
+        self.assertEqual(self.verdicts([ev("command", "grep ERROR log.txt", "nothing")]), {"contradicted"})
+
+    def test_name_in_command_text_stays_proven(self):
+        self.assertEqual(self.verdicts([ev("command", "pytest test_alpha test_beta", "ok")]), {"proven"})
+
+
 class TestDoctrine(unittest.TestCase):
     RULES = canary.parse_doctrine(["# doctrine: no-cmd:git push", "# doctrine: no-path:~/.ssh",
                                    "# doctrine: only-path:/repo/", "not a rule"])

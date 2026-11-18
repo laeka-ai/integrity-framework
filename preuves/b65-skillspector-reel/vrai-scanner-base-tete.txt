@@ -1,0 +1,37 @@
+# real SkillSpector v2.12.0, head 1846274: tests.test_skill_guard
+test_any_change_voids_the_exception (tests.test_skill_guard.SkillGuardTest.test_any_change_voids_the_exception) ... ok
+test_exception_passes_today_not_after_expiry (tests.test_skill_guard.SkillGuardTest.test_exception_passes_today_not_after_expiry) ... ok
+test_line_without_fingerprint_is_ignored_and_named (tests.test_skill_guard.SkillGuardTest.test_line_without_fingerprint_is_ignored_and_named) ... ok
+test_link_is_followed_to_the_trap (tests.test_skill_guard.SkillGuardTest.test_link_is_followed_to_the_trap) ... ok
+test_missing_or_failing_scanner_refuses (tests.test_skill_guard.SkillGuardTest.test_missing_or_failing_scanner_refuses) ... ok
+test_plugin_root_is_refused (tests.test_skill_guard.SkillGuardTest.test_plugin_root_is_refused)
+With pluginRoot, claude installs <loc>/<pluginRoot>/<source>: a safe decoy at <loc>/<source> must not pass. ... ok
+test_real_scanner_guards_claude_plugin_install (tests.test_skill_guard.SkillGuardTest.test_real_scanner_guards_claude_plugin_install)
+The <plugin>@<marketplace> that `claude plugin install` takes is scanned in its marketplace folder. ... ok
+test_real_scanner_refuses_the_trap_passes_the_safe_skill (tests.test_skill_guard.SkillGuardTest.test_real_scanner_refuses_the_trap_passes_the_safe_skill) ... ok
+test_scan_runs_without_network (tests.test_skill_guard.SkillGuardTest.test_scan_runs_without_network) ... ok
+test_source_outside_the_marketplace_is_refused (tests.test_skill_guard.SkillGuardTest.test_source_outside_the_marketplace_is_refused) ... ok
+test_trap_refused_safe_passes (tests.test_skill_guard.SkillGuardTest.test_trap_refused_safe_passes) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 8.475s
+
+OK
+rc=0
+
+# base 6b9e4bf own tests (6 tests, no real-scanner case)
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.615s
+
+OK
+rc=0
+
+# head tests against the base guard (SKILL_GUARD_BIN=6b9e4bf guard): the real-scanner trap case is green, the guard changes are red
+ERROR: test_plugin_root_is_refused (tests.test_skill_guard.SkillGuardTest.test_plugin_root_is_refused) (manifest={'pluginRoot': './real'})
+FAIL: test_plugin_root_is_refused (tests.test_skill_guard.SkillGuardTest.test_plugin_root_is_refused) (manifest={'metadata': {'pluginRoot': './real'}})
+FAIL: test_real_scanner_guards_claude_plugin_install (tests.test_skill_guard.SkillGuardTest.test_real_scanner_guards_claude_plugin_install)
+FAIL: test_scan_runs_without_network (tests.test_skill_guard.SkillGuardTest.test_scan_runs_without_network)
+FAIL: test_source_outside_the_marketplace_is_refused (tests.test_skill_guard.SkillGuardTest.test_source_outside_the_marketplace_is_refused)
+Ran 11 tests in 4.513s
+FAILED (failures=4, errors=1)
